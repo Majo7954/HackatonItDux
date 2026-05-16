@@ -10,59 +10,23 @@
     </div>
 
     <nav class="nav-menu">
-      <a class="nav-item" href="/dashboard">
-        <span>⌂</span>
-        Inicio
-      </a>
-
-      <a class="nav-item" href="/resultado-ia">
-        <span>☷</span>
-        Prospectos
-      </a>
-
-      <a class="nav-item" href="/importar">
-        <span>⇪</span>
-        Importar
-      </a>
-
-      <a class="nav-item active" href="/seguimientos">
-        <span>☑</span>
-        Seguimientos
-      </a>
-
-      <a class="nav-item" href="/insights">
-        <span>✦</span>
-        Insights
-      </a>
-
-      <a class="nav-item" href="#">
-        <span>⚙</span>
-        Configuración
-      </a>
+      <a class="nav-item" routerLink="/dashboard"><span>⌂</span>Inicio</a>
+      <a class="nav-item" routerLink="/resultado-ia"><span>☷</span>Prospectos</a>
+      <a class="nav-item" routerLink="/importar"><span>⇪</span>Importar</a>
+      <a class="nav-item active" routerLink="/seguimientos"><span>☑</span>Seguimientos</a>
+      <a class="nav-item" routerLink="/insights"><span>✦</span>Insights</a>
     </nav>
-
-    <div class="sidebar-profile">
-      <div class="profile-avatar">LA</div>
-      <div>
-        <strong>Laura</strong>
-        <p>Sales Lead</p>
-      </div>
-    </div>
   </aside>
 
   <!-- Main -->
   <main class="follow-main">
-    <!-- Topbar -->
     <header class="topbar">
       <div class="search-box">
         <span>⌕</span>
         <input type="text" placeholder="Buscar prospectos, tareas o acciones..." />
       </div>
-
       <div class="top-actions">
-        <a class="upload-button" href="/importar">+ Subir conversación</a>
-        <button class="icon-button">🔔</button>
-        <button class="user-button">LA</button>
+        <a class="upload-button" routerLink="/importar">+ Subir conversación</a>
       </div>
     </header>
 
@@ -71,15 +35,7 @@
         <div>
           <span class="eyebrow">Pipeline comercial</span>
           <h1>Tablero de seguimientos</h1>
-          <p>
-            Gestiona prospectos, prioriza acciones y visualiza el avance desde
-            la conversación inicial hasta la conversión.
-          </p>
-        </div>
-
-        <div class="header-actions">
-          <button type="button">☰ Filtros</button>
-          <button type="button">📅 Esta semana</button>
+          <p>Gestiona prospectos y visualiza el avance desde la conversación hasta la conversión.</p>
         </div>
       </div>
 
@@ -89,7 +45,7 @@
           <span class="summary-icon blue">👥</span>
           <div>
             <p>Total en pipeline</p>
-            <strong>24</strong>
+            <strong>{{ seguimientos().length }}</strong>
           </div>
         </article>
 
@@ -97,313 +53,170 @@
           <span class="summary-icon red">⚠</span>
           <div>
             <p>Alta prioridad</p>
-            <strong>4</strong>
+            <strong>{{ alta().length }}</strong>
           </div>
         </article>
 
         <article class="summary-card">
           <span class="summary-icon orange">⏱</span>
           <div>
-            <p>Sin respuesta 48h</p>
-            <strong>3</strong>
+            <p>Media prioridad</p>
+            <strong>{{ media().length }}</strong>
           </div>
         </article>
 
         <article class="summary-card">
           <span class="summary-icon green">✓</span>
           <div>
-            <p>Convertidos</p>
-            <strong>2</strong>
+            <p>Completados</p>
+            <strong>{{ completados().length }}</strong>
           </div>
         </article>
       </section>
 
-      <!-- Kanban board -->
-      <section class="kanban-board">
-        <!-- Nuevo -->
-        <div class="kanban-column">
-          <div class="column-header">
-            <div>
-              <span class="dot gray"></span>
-              <h3>Nuevo</h3>
-              <small>12</small>
-            </div>
-
-            <button type="button">⋯</button>
-          </div>
-
-          <article class="lead-card">
-            <div class="card-top">
-              <span class="tag inbound">Inbound</span>
-              <small>Hace 2h</small>
-            </div>
-
-            <h4>Roberto Gómez</h4>
-            <p>Inmobiliaria Sol</p>
-
-            <div class="card-note blue-note">
-              ⚡ Lead caliente
-            </div>
-          </article>
-
-          <article class="lead-card">
-            <div class="card-top">
-              <span class="tag">Redes sociales</span>
-              <small>Hace 5h</small>
-            </div>
-
-            <h4>Elena Martínez</h4>
-            <p>Distribuidora Norte</p>
-
-            <div class="progress-mini">
-              <span></span>
-            </div>
-          </article>
+      @if (loading()) {
+        <p style="padding: 2rem; color: #888; text-align: center;">Cargando seguimientos...</p>
+      } @else if (seguimientos().length === 0) {
+        <div style="padding: 3rem; text-align: center; color: #888;">
+          <p style="font-size: 1.1rem; margin-bottom: 1rem;">No hay seguimientos todavía.</p>
+          <a routerLink="/importar" style="color: #6366f1; font-weight: 600;">+ Importar primera conversación</a>
         </div>
+      } @else {
+        <!-- Kanban board -->
+        <section class="kanban-board">
 
-        <!-- En seguimiento -->
-        <div class="kanban-column highlighted">
-          <div class="column-header">
-            <div>
-              <span class="dot blue"></span>
-              <h3>En seguimiento</h3>
-              <small>8</small>
-            </div>
-
-            <button type="button">⋯</button>
-          </div>
-
-          <article class="lead-card selected">
-            <div class="card-top">
-              <span class="tag priority">Prioridad alta</span>
-              <button type="button">⋮</button>
-            </div>
-
-            <h4>María — Pastelería</h4>
-            <p>Suscripción Premium</p>
-
-            <div class="card-note ai-note">
-              ✨ IA Insight: contactar hoy y ofrecer acompañamiento inicial.
-            </div>
-
-            <div class="card-footer">
-              <span>🕒 Hace 4 días</span>
-              <span class="avatar-small">M</span>
-            </div>
-          </article>
-
-          <article class="lead-card">
-            <div class="card-top">
-              <span class="tag call">Llamada</span>
-              <small>Mañana 10:00</small>
-            </div>
-
-            <h4>Carlos Ruiz</h4>
-            <p>Logística Global</p>
-
-            <div class="card-note">
-              📞 Llamada programada para resolver dudas sobre planes.
-            </div>
-          </article>
-        </div>
-
-        <!-- Pendiente -->
-        <div class="kanban-column">
-          <div class="column-header">
-            <div>
-              <span class="dot brown"></span>
-              <h3>Pendiente</h3>
-              <small>5</small>
-            </div>
-
-            <button type="button">⋯</button>
-          </div>
-
-          <article class="lead-card">
-            <div class="card-top">
-              <span class="tag waiting">Esperando respuesta</span>
-              <small>Hace 1 día</small>
-            </div>
-
-            <h4>Lucía Torres</h4>
-            <p>Consultoría LT</p>
-
-            <div class="progress-bar">
-              <span></span>
-            </div>
-
-            <div class="card-note">
-              Esperando respuesta de presupuesto enviado.
-            </div>
-          </article>
-
-          <article class="lead-card risk">
-            <div class="card-top">
-              <span class="tag risk-tag">Riesgo</span>
-              <small>48h+</small>
-            </div>
-
-            <h4>Juan Pérez</h4>
-            <p>Comercio minorista</p>
-
-            <div class="card-note incident">
-              ⚠ No respondió al mensaje de seguimiento.
-            </div>
-          </article>
-        </div>
-
-        <!-- Interesado -->
-        <div class="kanban-column">
-          <div class="column-header">
-            <div>
-              <span class="dot blue"></span>
-              <h3>Interesado</h3>
-              <small>3</small>
-            </div>
-
-            <button type="button">⋯</button>
-          </div>
-
-          <article class="lead-card">
-            <div class="card-top">
-              <span class="tag interested">Demo pendiente</span>
-              <small>Hoy</small>
-            </div>
-
-            <h4>Fernando Silva</h4>
-            <p>Tech Solutions</p>
-
-            <div class="card-note blue-note">
-              🔎 Revisando contrato y requerimientos de API.
-            </div>
-          </article>
-
-          <article class="lead-card">
-            <div class="card-top">
-              <span class="tag interested">Alta intención</span>
-              <small>Hoy</small>
-            </div>
-
-            <h4>Rosita — Contadora</h4>
-            <p>Firma contable</p>
-
-            <div class="card-note ai-note">
-              ✨ Recomendar capacitación para cartera de clientes.
-            </div>
-          </article>
-        </div>
-
-        <!-- Convertido -->
-        <div class="kanban-column">
-          <div class="column-header">
-            <div>
-              <span class="dot brown"></span>
-              <h3>Convertido</h3>
-              <small>2</small>
-            </div>
-
-            <button type="button">⋯</button>
-          </div>
-
-          <article class="success-empty">
-            <div class="success-icon">✓</div>
-            <h4>Los éxitos aparecerán aquí</h4>
-            <p>
-              Cuando un prospecto contrate ItDux y emita su primera factura, se
-              mostrará en esta etapa.
-            </p>
-          </article>
-
-          <article class="lead-card converted-card">
-            <div class="card-top">
-              <span class="tag converted">Convertido</span>
-              <small>Ayer</small>
-            </div>
-
-            <h4>Clínica Dental</h4>
-            <p>Plan Profesional</p>
-
-            <div class="card-note success-note">
-              ✓ Primera factura emitida correctamente.
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <!-- Bottom section -->
-      <section class="bottom-grid">
-        <article class="panel">
-          <div class="panel-header">
-            <div>
-              <h3>Acciones recomendadas por IA</h3>
-              <p>Priorización automática para el equipo comercial.</p>
-            </div>
-          </div>
-
-          <div class="action-list">
-            <div class="action-item">
-              <span class="action-icon red">1</span>
+          <!-- Alta prioridad -->
+          <div class="kanban-column highlighted">
+            <div class="column-header">
               <div>
-                <strong>Contactar a María hoy</strong>
-                <p>
-                  Alta intención, dolor por precio y necesidad clara de empezar a facturar.
-                </p>
+                <span class="dot blue"></span>
+                <h3>Alta prioridad</h3>
+                <small>{{ alta().length }}</small>
               </div>
-              <a href="/resultado-ia">Ver análisis</a>
             </div>
 
-            <div class="action-item">
-              <span class="action-icon blue">2</span>
+            @for (seg of alta(); track seg.id) {
+              <article class="lead-card selected">
+                <div class="card-top">
+                  <span class="tag priority">Prioridad alta</span>
+                  <small>{{ formatFecha(seg.fecha_recordatorio) }}</small>
+                </div>
+
+                <h4>{{ seg.prospects?.nombre ?? 'Prospecto' }}</h4>
+                <p>{{ seg.prospects?.tipo_negocio ?? '' }}</p>
+
+                <div class="card-note ai-note">
+                  ✨ {{ seg.accion }}
+                </div>
+
+                <div class="card-footer">
+                  <span>Estado: {{ seg.estado }}</span>
+                  <span class="avatar-small">{{ seg.prospects ? initials(seg.prospects.nombre) : '?' }}</span>
+                </div>
+              </article>
+            }
+
+            @if (alta().length === 0) {
+              <p style="padding: 1rem; color: #aaa; font-size: 0.85rem;">Sin tareas de alta prioridad.</p>
+            }
+          </div>
+
+          <!-- Media prioridad -->
+          <div class="kanban-column">
+            <div class="column-header">
               <div>
-                <strong>Enviar guía SIAT a Rodrigo</strong>
-                <p>
-                  El prospecto tiene dudas sobre cumplimiento y riesgo de multas.
-                </p>
+                <span class="dot brown"></span>
+                <h3>Media prioridad</h3>
+                <small>{{ media().length }}</small>
               </div>
-              <a href="/resultado-ia">Ver análisis</a>
             </div>
 
-            <div class="action-item">
-              <span class="action-icon green">3</span>
+            @for (seg of media(); track seg.id) {
+              <article class="lead-card">
+                <div class="card-top">
+                  <span class="tag waiting">Media</span>
+                  <small>{{ formatFecha(seg.fecha_recordatorio) }}</small>
+                </div>
+
+                <h4>{{ seg.prospects?.nombre ?? 'Prospecto' }}</h4>
+                <p>{{ seg.prospects?.tipo_negocio ?? '' }}</p>
+
+                <div class="card-note">
+                  {{ seg.accion }}
+                </div>
+              </article>
+            }
+
+            @if (media().length === 0) {
+              <p style="padding: 1rem; color: #aaa; font-size: 0.85rem;">Sin tareas de media prioridad.</p>
+            }
+          </div>
+
+          <!-- Baja prioridad -->
+          <div class="kanban-column">
+            <div class="column-header">
               <div>
-                <strong>Agendar reunión técnica con Fernando</strong>
-                <p>
-                  Mencionó integración API y podría contratar el plan Empresarial.
-                </p>
+                <span class="dot gray"></span>
+                <h3>Baja prioridad</h3>
+                <small>{{ baja().length }}</small>
               </div>
-              <a href="/resultado-ia">Ver análisis</a>
             </div>
+
+            @for (seg of baja(); track seg.id) {
+              <article class="lead-card">
+                <div class="card-top">
+                  <span class="tag">Baja</span>
+                  <small>{{ formatFecha(seg.fecha_recordatorio) }}</small>
+                </div>
+
+                <h4>{{ seg.prospects?.nombre ?? 'Prospecto' }}</h4>
+                <p>{{ seg.prospects?.tipo_negocio ?? '' }}</p>
+
+                <div class="card-note">
+                  {{ seg.accion }}
+                </div>
+              </article>
+            }
+
+            @if (baja().length === 0) {
+              <p style="padding: 1rem; color: #aaa; font-size: 0.85rem;">Sin tareas de baja prioridad.</p>
+            }
           </div>
-        </article>
 
-        <article class="panel reminder-panel">
-          <div class="panel-header">
-            <div>
-              <h3>Recordatorios de hoy</h3>
-              <p>Tareas sugeridas para no perder oportunidades.</p>
+          <!-- Completados -->
+          <div class="kanban-column">
+            <div class="column-header">
+              <div>
+                <span class="dot brown"></span>
+                <h3>Completados</h3>
+                <small>{{ completados().length }}</small>
+              </div>
             </div>
+
+            @if (completados().length === 0) {
+              <article class="success-empty">
+                <div class="success-icon">✓</div>
+                <h4>Los éxitos aparecerán aquí</h4>
+                <p>Cuando marques una tarea como completada, aparecerá en esta columna.</p>
+              </article>
+            } @else {
+              @for (seg of completados(); track seg.id) {
+                <article class="lead-card converted-card">
+                  <div class="card-top">
+                    <span class="tag converted">Completado</span>
+                  </div>
+                  <h4>{{ seg.prospects?.nombre ?? 'Prospecto' }}</h4>
+                  <div class="card-note success-note">✓ {{ seg.accion }}</div>
+                </article>
+              }
+            }
           </div>
 
-          <div class="reminder-list">
-            <div class="reminder-item">
-              <span>09:00</span>
-              <p>Enviar mensaje personalizado a María.</p>
-            </div>
+        </section>
+      }
 
-            <div class="reminder-item">
-              <span>11:30</span>
-              <p>Revisar respuesta de Lucía Torres.</p>
-            </div>
-
-            <div class="reminder-item">
-              <span>15:00</span>
-              <p>Coordinar demo con Rosita.</p>
-            </div>
-          </div>
-        </article>
-      </section>
     </section>
 
-    <button class="floating-action">✓+</button>
+    <a class="floating-action" routerLink="/importar">✓+</a>
   </main>
 </div>

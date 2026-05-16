@@ -1,1 +1,324 @@
-<p>insights works!</p>
+<div class="insights-layout">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">ID</div>
+      <div>
+        <h1>ITDUX Convert 360</h1>
+        <p>AI-Driven CRM</p>
+      </div>
+    </div>
+
+    <nav class="nav-menu">
+      <a class="nav-item" href="/dashboard">
+        <span>⌂</span>
+        Inicio
+      </a>
+
+      <a class="nav-item" href="/resultado-ia">
+        <span>☷</span>
+        Prospectos
+      </a>
+
+      <a class="nav-item" href="/importar">
+        <span>⇪</span>
+        Importar
+      </a>
+
+      <a class="nav-item" href="/seguimientos">
+        <span>☑</span>
+        Seguimientos
+      </a>
+
+      <a class="nav-item active" href="/insights">
+        <span>✦</span>
+        Insights
+      </a>
+
+      <a class="nav-item" href="#">
+        <span>⚙</span>
+        Configuración
+      </a>
+    </nav>
+
+    <div class="sidebar-profile">
+      <div class="profile-avatar">LA</div>
+      <div>
+        <strong>Laura</strong>
+        <p>Sales Lead</p>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="insights-main">
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="search-box">
+        <span>⌕</span>
+        <input type="text" placeholder="Buscar insight, objeción, plan o campaña..." />
+      </div>
+
+      <div class="top-actions">
+        <a class="upload-button" href="/importar">+ Subir conversación</a>
+        <button class="icon-button">🔔</button>
+        <button class="user-button">LA</button>
+      </div>
+    </header>
+
+    <section class="content">
+      <div class="page-header">
+        <div>
+          <span class="eyebrow">Marketing intelligence</span>
+          <h1>Insights comerciales</h1>
+          <p>
+            Patrones detectados por IA en conversaciones de ventas, objeciones,
+            planes sugeridos y oportunidades de conversión.
+          </p>
+        </div>
+
+        <div class="header-actions">
+          <button type="button">📅 Últimos 30 días</button>
+          <button type="button">⇧ Exportar</button>
+        </div>
+      </div>
+
+      <!-- Top insights -->
+      <section class="top-grid">
+        <article class="highlight-card">
+          <span>✨ AI Highlight</span>
+
+          <h2>Oportunidad de cierre</h2>
+
+          <p>
+            Los prospectos del sector tecnológico que mencionan
+            <strong>API</strong> o <strong>integración web</strong> tienen una
+            alta probabilidad de contratar el plan Empresarial si se agenda una
+            reunión técnica en las primeras 24 horas.
+          </p>
+
+          <a href="/resultado-ia">Ver prospectos clave</a>
+
+          <div class="decor-circle one"></div>
+          <div class="decor-circle two"></div>
+        </article>
+
+        <article class="panel doubts-panel">
+          <div class="panel-header">
+            <div>
+              <h3>Dudas frecuentes</h3>
+              <p>Temas que detienen o retrasan el avance del prospecto.</p>
+            </div>
+
+            <button type="button">⋮</button>
+          </div>
+
+          <div class="bar-list">
+            <div class="bar-item">
+              <div class="bar-label">
+                <strong>Presupuesto</strong>
+                <span>78 menciones</span>
+              </div>
+              <div class="bar-track">
+                <div class="bar-fill budget"></div>
+              </div>
+            </div>
+
+            <div class="bar-item">
+              <div class="bar-label">
+                <strong>SIAT / cumplimiento</strong>
+                <span>54 menciones</span>
+              </div>
+              <div class="bar-track">
+                <div class="bar-fill siat"></div>
+              </div>
+            </div>
+
+            <div class="bar-item">
+              <div class="bar-label">
+                <strong>Complejidad de integración</strong>
+                <span>32 menciones</span>
+              </div>
+              <div class="bar-track">
+                <div class="bar-fill integration"></div>
+              </div>
+            </div>
+
+            <div class="bar-item">
+              <div class="bar-label">
+                <strong>Tiempo de implementación</strong>
+                <span>21 menciones</span>
+              </div>
+              <div class="bar-track">
+                <div class="bar-fill time"></div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <!-- Middle cards -->
+      <section class="middle-grid">
+        <article class="panel plans-panel">
+          <div class="panel-header">
+            <div>
+              <h3>Planes sugeridos</h3>
+              <p>Distribución basada en necesidades detectadas.</p>
+            </div>
+          </div>
+
+          <div class="plans-content">
+            <div class="donut">
+              <div class="donut-center">
+                <strong>100%</strong>
+                <span>Total</span>
+              </div>
+            </div>
+
+            <div class="legend">
+              <div>
+                <span class="dot empresarial"></span>
+                <p>
+                  <strong>Empresarial</strong>
+                  <small>45%</small>
+                </p>
+              </div>
+
+              <div>
+                <span class="dot profesional"></span>
+                <p>
+                  <strong>Profesional</strong>
+                  <small>30%</small>
+                </p>
+              </div>
+
+              <div>
+                <span class="dot basico"></span>
+                <p>
+                  <strong>Básico</strong>
+                  <small>25%</small>
+                </p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="panel sentiment-panel">
+          <div class="panel-header">
+            <div>
+              <h3>Sentimiento del mercado</h3>
+              <p>Análisis emocional de las interacciones recientes.</p>
+            </div>
+
+            <span class="positive-pill">↗ +12.4% positivo</span>
+          </div>
+
+          <div class="sentiment-grid">
+            <div class="sentiment-card positive">
+              <span>☺</span>
+              <div>
+                <strong>Positivo alto</strong>
+                <p>
+                  La mayoría de prospectos muestra entusiasmo por la
+                  digitalización de reportes y reducción de papel.
+                </p>
+              </div>
+            </div>
+
+            <div class="sentiment-card friction">
+              <span>☹</span>
+              <div>
+                <strong>Fricción detectada</strong>
+                <p>
+                  Hay resistencia recurrente por dudas sobre migración,
+                  configuración inicial y curva de aprendizaje.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="analysis-footer">
+            <div class="avatar-stack">
+              <span>LA</span>
+              <span>AR</span>
+              <span>+5</span>
+            </div>
+
+            <p>Analizado por 8 miembros del equipo comercial.</p>
+          </div>
+        </article>
+      </section>
+
+      <!-- Strategic recommendations -->
+      <section class="recommendations-grid">
+        <article class="panel recommendation-card">
+          <div class="recommendation-icon">🎯</div>
+
+          <div>
+            <span class="card-label">Insight de conversión</span>
+            <h3>Atender rápido a prospectos API</h3>
+            <p>
+              Detectamos que las conversaciones donde el cliente pregunta por
+              <strong>API de integración</strong> tienen mayor probabilidad de
+              cierre cuando se agenda una reunión técnica antes de 24 horas.
+            </p>
+          </div>
+
+          <button type="button">Configurar alerta IA</button>
+        </article>
+
+        <article class="panel recommendation-card">
+          <div class="recommendation-icon">📣</div>
+
+          <div>
+            <span class="card-label">Recomendación de marketing</span>
+            <h3>Crear contenido sobre SIAT y precios</h3>
+            <p>
+              Las objeciones más repetidas están relacionadas con presupuesto,
+              cumplimiento SIAT y facilidad de uso. Se recomienda una campaña
+              educativa con ejemplos simples para PYMES.
+            </p>
+          </div>
+
+          <button type="button">Crear campaña</button>
+        </article>
+      </section>
+
+      <!-- Content ideas -->
+      <section class="panel content-ideas">
+        <div class="panel-header">
+          <div>
+            <h3>Ideas de contenido sugeridas por IA</h3>
+            <p>Temas para redes sociales, WhatsApp y campañas comerciales.</p>
+          </div>
+        </div>
+
+        <div class="ideas-grid">
+          <div class="idea-card">
+            <span>01</span>
+            <strong>¿Cómo empezar a facturar electrónicamente en Bolivia?</strong>
+            <p>Contenido educativo para prospectos con dudas sobre SIAT.</p>
+          </div>
+
+          <div class="idea-card">
+            <span>02</span>
+            <strong>Comparativa simple de planes ItDux</strong>
+            <p>Explicar Básico, Profesional y Empresarial con casos reales.</p>
+          </div>
+
+          <div class="idea-card">
+            <span>03</span>
+            <strong>Guía para emitir tu primera factura</strong>
+            <p>Refuerza facilidad de uso y reduce miedo técnico.</p>
+          </div>
+
+          <div class="idea-card">
+            <span>04</span>
+            <strong>Automatización con API para empresas</strong>
+            <p>Campaña dirigida a prospectos técnicos y empresas con web propia.</p>
+          </div>
+        </div>
+      </section>
+    </section>
+  </main>
+</div>

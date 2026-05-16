@@ -1,1 +1,348 @@
-<p>dashboard works!</p>
+<div class="dashboard-layout">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">ID</div>
+      <div>
+        <h1>ITDUX Convert 360</h1>
+        <p>AI-Driven CRM</p>
+      </div>
+    </div>
+
+    <nav class="nav-menu">
+      <a class="nav-item active" href="/dashboard">
+        <span>⌂</span>
+        Inicio
+      </a>
+
+      <a class="nav-item" href="/resultado-ia">
+        <span>☷</span>
+        Prospectos
+      </a>
+
+      <a class="nav-item" href="/importar">
+        <span>⇪</span>
+        Importar
+      </a>
+
+      <a class="nav-item" href="/seguimientos">
+        <span>☑</span>
+        Seguimientos
+      </a>
+
+      <a class="nav-item" href="/insights">
+        <span>✦</span>
+        Insights
+      </a>
+
+      <a class="nav-item" href="#">
+        <span>⚙</span>
+        Configuración
+      </a>
+    </nav>
+
+    <div class="sidebar-card">
+      <span>✨</span>
+      <strong>Modo IA activo</strong>
+      <p>Priorización comercial basada en conversaciones.</p>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="dashboard-main">
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="search-box">
+        <span>⌕</span>
+        <input type="text" placeholder="Buscar prospectos, acciones o conversaciones..." />
+      </div>
+
+      <div class="top-actions">
+        <a class="upload-button" href="/importar">
+          + Subir conversación
+        </a>
+
+        <button class="icon-button">🔔</button>
+        <button class="user-button">LA</button>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <section class="content">
+      <div class="welcome-row">
+        <div>
+          <h2>Hola Laura 👋</h2>
+          <p>
+            Tienes <strong>4 prospectos</strong> que necesitan atención hoy.
+          </p>
+        </div>
+
+        <div class="date-pill">
+          📅 Hoy, 24 Oct
+        </div>
+      </div>
+
+      <!-- Metric Cards -->
+      <section class="metrics-grid">
+        <article class="metric-card">
+          <div class="metric-top">
+            <div class="metric-icon blue">👥</div>
+            <span class="trend positive">+12%</span>
+          </div>
+
+          <p>Prospectos totales</p>
+          <h3>15</h3>
+          <small>3 nuevos esta semana</small>
+        </article>
+
+        <article class="metric-card">
+          <div class="metric-top">
+            <div class="metric-icon red">!</div>
+            <span class="trend danger">Crítico</span>
+          </div>
+
+          <p>Alta prioridad</p>
+          <h3>4</h3>
+          <small>Requieren respuesta hoy</small>
+        </article>
+
+        <article class="metric-card">
+          <div class="metric-top">
+            <div class="metric-icon orange">⏱</div>
+            <span class="trend neutral">48h+</span>
+          </div>
+
+          <p>Sin seguimiento</p>
+          <h3>3</h3>
+          <small>Prospectos en riesgo</small>
+        </article>
+
+        <article class="metric-card">
+          <div class="metric-top">
+            <div class="metric-icon green">✓</div>
+            <span class="trend positive">+2</span>
+          </div>
+
+          <p>Convertidos</p>
+          <h3>2</h3>
+          <small>Clientes activados</small>
+        </article>
+      </section>
+
+      <!-- Main Grid -->
+      <section class="dashboard-grid">
+        <!-- Left Column -->
+        <div class="left-column">
+          <!-- Urgent Tasks -->
+          <article class="panel">
+            <div class="panel-header">
+              <div>
+                <h3>Tareas urgentes</h3>
+                <p>Acciones comerciales recomendadas por IA.</p>
+              </div>
+
+              <a href="/seguimientos">Ver todas</a>
+            </div>
+
+            <div class="task-list">
+              <div class="task-card high">
+                <div class="avatar image-avatar">
+                  <span>87%</span>
+                </div>
+
+                <div class="task-content">
+                  <div class="task-title-row">
+                    <div>
+                      <h4>María — Pastelería</h4>
+                      <p>Interesada en plan básico para empezar a facturar.</p>
+                    </div>
+
+                    <span class="priority high-priority">Alto interés</span>
+                  </div>
+
+                  <div class="ai-note">
+                    ✨ <strong>IA recomienda:</strong>
+                    Ofrecer acompañamiento en su primera factura y explicar el plan básico.
+                  </div>
+                </div>
+
+                <a class="task-arrow" href="/resultado-ia">›</a>
+              </div>
+
+              <div class="task-card medium">
+                <div class="avatar letter-avatar">
+                  R
+                </div>
+
+                <div class="task-content">
+                  <div class="task-title-row">
+                    <div>
+                      <h4>Rodrigo — Tienda multisucursal</h4>
+                      <p>Preocupado por errores de facturación y multas fiscales.</p>
+                    </div>
+
+                    <span class="priority medium-priority">Medio interés</span>
+                  </div>
+
+                  <div class="incident-note">
+                    ⚠ Incidencia: detectó dudas sobre SIAT y control por sucursales.
+                  </div>
+                </div>
+
+                <a class="task-arrow" href="/resultado-ia">›</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Funnel -->
+          <article class="panel funnel-panel">
+            <div class="panel-header">
+              <div>
+                <h3>Embudo de ventas semanal</h3>
+                <p>Estado actual de los prospectos analizados.</p>
+              </div>
+            </div>
+
+            <div class="funnel">
+              <div class="funnel-step">
+                <strong>8</strong>
+                <span>Nuevos</span>
+                <div class="bar">
+                  <div style="width: 100%"></div>
+                </div>
+              </div>
+
+              <div class="funnel-step">
+                <strong>5</strong>
+                <span>Seguimiento</span>
+                <div class="bar">
+                  <div style="width: 70%"></div>
+                </div>
+              </div>
+
+              <div class="funnel-step">
+                <strong>3</strong>
+                <span>Interesados</span>
+                <div class="bar">
+                  <div style="width: 45%"></div>
+                </div>
+              </div>
+
+              <div class="funnel-step converted">
+                <strong>2</strong>
+                <span>Convertidos</span>
+                <div class="bar">
+                  <div style="width: 30%"></div>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <!-- Right Column -->
+        <div class="right-column">
+          <!-- IA Insights -->
+          <article class="insights-card">
+            <div class="insights-header">
+              <div>
+                <span>⚡</span>
+                <h3>Insights IA</h3>
+              </div>
+
+              <div class="bulb">💡</div>
+            </div>
+
+            <div class="insight-list">
+              <p>
+                💡 Muchos prospectos recientes preguntan por
+                <strong>presupuesto detallado</strong> antes del primer contacto.
+              </p>
+
+              <p>
+                💡 Hay <strong>3 clientes</strong> que no han recibido seguimiento en más de 48 horas.
+              </p>
+
+              <p>
+                💡 La objeción más repetida es:
+                <strong>precio y facilidad de uso</strong>.
+              </p>
+            </div>
+
+            <button class="report-button">
+              Generar informe completo
+            </button>
+          </article>
+
+          <!-- Recent Activity -->
+          <article class="panel activity-panel">
+            <div class="panel-header">
+              <div>
+                <h3>Actividad reciente</h3>
+                <p>Últimos movimientos comerciales.</p>
+              </div>
+
+              <span>↻</span>
+            </div>
+
+            <div class="activity-list">
+              <div class="activity-item">
+                <div class="activity-avatar border-red">M</div>
+
+                <div>
+                  <strong>María — Pastelería</strong>
+                  <p>Alta prioridad</p>
+                </div>
+
+                <small>Hace 10 min</small>
+              </div>
+
+              <div class="activity-item">
+                <div class="activity-avatar">JP</div>
+
+                <div>
+                  <strong>Juan Pérez</strong>
+                  <p>Seguimiento enviado</p>
+                </div>
+
+                <small>Hace 1h</small>
+              </div>
+
+              <div class="activity-item">
+                <div class="activity-avatar">CL</div>
+
+                <div>
+                  <strong>Clínica Dental</strong>
+                  <p>Conversación subida</p>
+                </div>
+
+                <small>Hace 3h</small>
+              </div>
+            </div>
+          </article>
+
+          <!-- Suggested Marketing -->
+          <article class="panel marketing-panel">
+            <div class="panel-header">
+              <div>
+                <h3>Recomendación marketing</h3>
+                <p>Contenido sugerido según conversaciones.</p>
+              </div>
+            </div>
+
+            <div class="marketing-suggestion">
+              <span>📣</span>
+
+              <div>
+                <strong>Crear contenido sobre SIAT</strong>
+                <p>
+                  Publicar un reel corto: “Cómo empezar a facturar electrónicamente
+                  sin complicarte con el SIAT”.
+                </p>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+    </section>
+  </main>
+</div>

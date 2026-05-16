@@ -6,6 +6,7 @@ import { ImportChat } from './pages/import-chat/import-chat';
 import { AiResult } from './pages/ai-result/ai-result';
 import { FollowUps } from './pages/follow-ups/follow-ups';
 import { Insights } from './pages/insights/insights';
+import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
   {
@@ -20,22 +21,27 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     component: Dashboard,
+    canActivate: [authGuard],
   },
   {
     path: 'importar',
     component: ImportChat,
+    canActivate: [authGuard],
   },
   {
     path: 'resultado-ia',
     component: AiResult,
+    canActivate: [authGuard],
   },
   {
     path: 'seguimientos',
     component: FollowUps,
+    canActivate: [authGuard],
   },
   {
     path: 'insights',
     component: Insights,
+    canActivate: [authGuard],
   },
   {
     path: '**',

@@ -10,114 +10,48 @@
     </div>
 
     <nav class="nav-menu">
-      <a class="nav-item" href="/dashboard">
-        <span>⌂</span>
-        Inicio
-      </a>
-
-      <a class="nav-item" href="/resultado-ia">
-        <span>☷</span>
-        Prospectos
-      </a>
-
-      <a class="nav-item active" href="/importar">
-        <span>⇪</span>
-        Importar
-      </a>
-
-      <a class="nav-item" href="/seguimientos">
-        <span>☑</span>
-        Seguimientos
-      </a>
-
-      <a class="nav-item" href="/insights">
-        <span>✦</span>
-        Insights
-      </a>
-
-      <a class="nav-item" href="#">
-        <span>⚙</span>
-        Configuración
-      </a>
+      <a class="nav-item" routerLink="/dashboard"><span>⌂</span>Inicio</a>
+      <a class="nav-item" routerLink="/resultado-ia"><span>☷</span>Prospectos</a>
+      <a class="nav-item active" routerLink="/importar"><span>⇪</span>Importar</a>
+      <a class="nav-item" routerLink="/seguimientos"><span>☑</span>Seguimientos</a>
+      <a class="nav-item" routerLink="/insights"><span>✦</span>Insights</a>
     </nav>
-
-    <div class="sidebar-profile">
-      <div class="profile-avatar">LA</div>
-      <div>
-        <strong>Laura</strong>
-        <p>Sales Lead</p>
-      </div>
-    </div>
   </aside>
 
   <!-- Main -->
   <main class="import-main">
-    <!-- Topbar -->
     <header class="topbar">
       <div class="topbar-title">
         <h2>Importar conversación</h2>
         <p>Convierte chats comerciales en datos útiles para ventas.</p>
       </div>
-
-      <div class="top-actions">
-        <a class="upload-button" href="/importar">Subir conversación</a>
-        <button class="icon-button">🔔</button>
-        <button class="user-button">LA</button>
-      </div>
     </header>
 
-    <!-- Content -->
     <section class="content">
       <div class="page-heading">
         <span class="eyebrow">Análisis comercial con IA</span>
         <h1>Importar conversación</h1>
         <p>
-          Sube un archivo exportado de WhatsApp o pega la conversación manualmente
-          para detectar buyer persona, dolor, plan recomendado, score e incentivo.
+          Pega la conversación del prospecto para detectar buyer persona, dolor,
+          plan recomendado, score e incentivo.
         </p>
       </div>
 
       <section class="import-grid">
-        <!-- Upload card -->
-        <article class="upload-card">
-          <div class="upload-icon">☁</div>
-
-          <h3>Arrastra archivo ZIP o TXT</h3>
-
-          <p>
-            Puedes subir el archivo exportado desde WhatsApp o un texto plano con
-            la conversación del prospecto.
-          </p>
-
-          <label class="file-button">
-            Seleccionar archivo
-            <input type="file" accept=".zip,.txt" />
-          </label>
-
-          <div class="file-rules">
-            <span>Formatos permitidos: .zip, .txt</span>
-            <span>Tamaño máximo sugerido: 10 MB</span>
-          </div>
-        </article>
-
-        <!-- Instructions card -->
         <article class="guide-card">
           <div class="guide-header">
             <span>💡</span>
             <h3>¿Qué obtendrás?</h3>
           </div>
-
           <div class="guide-list">
             <div>
               <strong>1. Ficha del prospecto</strong>
               <p>Nombre, perfil, rubro, necesidad y estado comercial.</p>
             </div>
-
             <div>
               <strong>2. Diagnóstico IA</strong>
               <p>Dolor principal, objeción, urgencia y prioridad.</p>
             </div>
-
             <div>
               <strong>3. Acción recomendada</strong>
               <p>Plan sugerido, incentivo, mensaje y seguimiento.</p>
@@ -133,11 +67,12 @@
             <h3>Pega conversación aquí</h3>
             <p>Soporta texto copiado desde WhatsApp, Facebook, Instagram o correo.</p>
           </div>
-
           <span class="status-pill">Modo demo</span>
         </div>
 
         <textarea
+          [(ngModel)]="conversacion"
+          name="conversacion"
           placeholder="Ejemplo:
 
 Cliente: Hola, tengo una pastelería y necesito empezar a facturar.
@@ -147,10 +82,9 @@ Cliente: No sé exacto, pero vendo bastante por redes sociales..."
         ></textarea>
 
         <div class="example-row">
-          <button type="button">Ejemplo María</button>
-          <button type="button">Ejemplo Rosita</button>
-          <button type="button">Ejemplo Rodrigo</button>
-          <button type="button">Ejemplo Fer API</button>
+          <button type="button" (click)="cargarEjemplo('maria')">Ejemplo María</button>
+          <button type="button" (click)="cargarEjemplo('rosita')">Ejemplo Rosita</button>
+          <button type="button" (click)="cargarEjemplo('rodrigo')">Ejemplo Rodrigo</button>
         </div>
       </section>
 
@@ -175,25 +109,41 @@ Cliente: No sé exacto, pero vendo bastante por redes sociales..."
         <div class="option-card selected">
           <span>💬</span>
           <div>
-            <strong>Generar respuesta</strong>
-            <p>Mensaje personalizado listo para WhatsApp.</p>
+            <strong>Generar resumen</strong>
+            <p>Diagnóstico listo para el equipo comercial.</p>
           </div>
         </div>
 
         <div class="option-card selected">
           <span>🎯</span>
           <div>
-            <strong>Recomendar incentivo</strong>
-            <p>Descuento, capacitación, demo o soporte inicial.</p>
+            <strong>Recomendar plan</strong>
+            <p>Plan ideal según el perfil del prospecto.</p>
           </div>
         </div>
       </section>
 
+      <!-- Error -->
+      @if (errorMsg()) {
+        <div class="error-banner" style="margin: 0 0 1rem 0; padding: 0.75rem 1rem; background: #fee2e2; border-radius: 8px; color: #dc2626;">
+          {{ errorMsg() }}
+        </div>
+      }
+
       <!-- Analyze button -->
       <div class="analyze-area">
-        <a class="analyze-button" href="/resultado-ia">
-          ✨ Analizar conversación
-        </a>
+        <button
+          type="button"
+          class="analyze-button"
+          (click)="analizar()"
+          [disabled]="loading()"
+        >
+          @if (loading()) {
+            ⏳ Analizando...
+          } @else {
+            ✨ Analizar conversación
+          }
+        </button>
 
         <p>
           El análisis creará una ficha comercial y mostrará el resultado en la

@@ -10,34 +10,34 @@
     </div>
 
     <nav class="nav-menu">
-      <a class="nav-item active" href="/dashboard">
+      <a class="nav-item active" routerLink="/dashboard">
         <span>⌂</span>
         Inicio
       </a>
 
-      <a class="nav-item" href="/resultado-ia">
+      <a class="nav-item" routerLink="/resultado-ia">
         <span>☷</span>
         Prospectos
       </a>
 
-      <a class="nav-item" href="/importar">
+      <a class="nav-item" routerLink="/importar">
         <span>⇪</span>
         Importar
       </a>
 
-      <a class="nav-item" href="/seguimientos">
+      <a class="nav-item" routerLink="/seguimientos">
         <span>☑</span>
         Seguimientos
       </a>
 
-      <a class="nav-item" href="/insights">
+      <a class="nav-item" routerLink="/insights">
         <span>✦</span>
         Insights
       </a>
 
-      <a class="nav-item" href="#">
-        <span>⚙</span>
-        Configuración
+      <a class="nav-item" href="#" (click)="logout()">
+        <span>⏻</span>
+        Cerrar sesión
       </a>
     </nav>
 
@@ -58,12 +58,14 @@
       </div>
 
       <div class="top-actions">
-        <a class="upload-button" href="/importar">
+        <a class="upload-button" routerLink="/importar">
           + Subir conversación
         </a>
 
         <button class="icon-button">🔔</button>
-        <button class="user-button">LA</button>
+        <button class="user-button">
+          {{ advisor() ? initials(advisor()!.nombre) : '?' }}
+        </button>
       </div>
     </header>
 
@@ -71,14 +73,14 @@
     <section class="content">
       <div class="welcome-row">
         <div>
-          <h2>Hola Laura 👋</h2>
+          <h2>Hola {{ advisor()?.nombre ?? 'Asesor' }} 👋</h2>
           <p>
-            Tienes <strong>4 prospectos</strong> que necesitan atención hoy.
+            Tienes <strong>{{ metrics().alta_prioridad }} prospectos</strong> que necesitan atención hoy.
           </p>
         </div>
 
         <div class="date-pill">
-          📅 Hoy, 24 Oct
+          📅 {{ today }}
         </div>
       </div>
 
@@ -87,12 +89,10 @@
         <article class="metric-card">
           <div class="metric-top">
             <div class="metric-icon blue">👥</div>
-            <span class="trend positive">+12%</span>
           </div>
-
           <p>Prospectos totales</p>
-          <h3>15</h3>
-          <small>3 nuevos esta semana</small>
+          <h3>{{ metrics().total }}</h3>
+          <small>registros en tu cuenta</small>
         </article>
 
         <article class="metric-card">
@@ -100,31 +100,26 @@
             <div class="metric-icon red">!</div>
             <span class="trend danger">Crítico</span>
           </div>
-
           <p>Alta prioridad</p>
-          <h3>4</h3>
-          <small>Requieren respuesta hoy</small>
+          <h3>{{ metrics().alta_prioridad }}</h3>
+          <small>Requieren atención hoy</small>
         </article>
 
         <article class="metric-card">
           <div class="metric-top">
             <div class="metric-icon orange">⏱</div>
-            <span class="trend neutral">48h+</span>
           </div>
-
           <p>Sin seguimiento</p>
-          <h3>3</h3>
-          <small>Prospectos en riesgo</small>
+          <h3>{{ metrics().sin_seguimiento }}</h3>
+          <small>Prospectos nuevos</small>
         </article>
 
         <article class="metric-card">
           <div class="metric-top">
             <div class="metric-icon green">✓</div>
-            <span class="trend positive">+2</span>
           </div>
-
           <p>Convertidos</p>
-          <h3>2</h3>
+          <h3>{{ metrics().convertidos }}</h3>
           <small>Clientes activados</small>
         </article>
       </section>
@@ -140,57 +135,41 @@
                 <h3>Tareas urgentes</h3>
                 <p>Acciones comerciales recomendadas por IA.</p>
               </div>
-
-              <a href="/seguimientos">Ver todas</a>
+              <a routerLink="/seguimientos">Ver todas</a>
             </div>
 
             <div class="task-list">
-              <div class="task-card high">
-                <div class="avatar image-avatar">
-                  <span>87%</span>
-                </div>
-
-                <div class="task-content">
-                  <div class="task-title-row">
-                    <div>
-                      <h4>María — Pastelería</h4>
-                      <p>Interesada en plan básico para empezar a facturar.</p>
+              @if (loading()) {
+                <p style="padding: 1rem; color: #888;">Cargando tareas...</p>
+              } @else if (urgentSeguimientos.length === 0) {
+                <p style="padding: 1rem; color: #888;">
+                  No hay tareas urgentes. <a routerLink="/importar">Importa una conversación</a> para comenzar.
+                </p>
+              } @else {
+                @for (seg of urgentSeguimientos; track seg.id) {
+                  <div class="task-card high">
+                    <div class="avatar letter-avatar">
+                      {{ seg.prospects ? initials(seg.prospects.nombre) : '?' }}
                     </div>
 
-                    <span class="priority high-priority">Alto interés</span>
-                  </div>
+                    <div class="task-content">
+                      <div class="task-title-row">
+                        <div>
+                          <h4>{{ seg.prospects?.nombre ?? 'Prospecto' }} — {{ seg.prospects?.tipo_negocio ?? '' }}</h4>
+                          <p>{{ seg.accion }}</p>
+                        </div>
+                        <span class="priority high-priority">{{ seg.prioridad }}</span>
+                      </div>
 
-                  <div class="ai-note">
-                    ✨ <strong>IA recomienda:</strong>
-                    Ofrecer acompañamiento en su primera factura y explicar el plan básico.
-                  </div>
-                </div>
-
-                <a class="task-arrow" href="/resultado-ia">›</a>
-              </div>
-
-              <div class="task-card medium">
-                <div class="avatar letter-avatar">
-                  R
-                </div>
-
-                <div class="task-content">
-                  <div class="task-title-row">
-                    <div>
-                      <h4>Rodrigo — Tienda multisucursal</h4>
-                      <p>Preocupado por errores de facturación y multas fiscales.</p>
+                      <div class="ai-note">
+                        ✨ <strong>IA recomienda:</strong> {{ seg.accion }}
+                      </div>
                     </div>
 
-                    <span class="priority medium-priority">Medio interés</span>
+                    <a class="task-arrow" routerLink="/seguimientos">›</a>
                   </div>
-
-                  <div class="incident-note">
-                    ⚠ Incidencia: detectó dudas sobre SIAT y control por sucursales.
-                  </div>
-                </div>
-
-                <a class="task-arrow" href="/resultado-ia">›</a>
-              </div>
+                }
+              }
             </div>
           </article>
 
@@ -198,41 +177,31 @@
           <article class="panel funnel-panel">
             <div class="panel-header">
               <div>
-                <h3>Embudo de ventas semanal</h3>
-                <p>Estado actual de los prospectos analizados.</p>
+                <h3>Embudo de ventas</h3>
+                <p>Estado actual de los prospectos.</p>
               </div>
             </div>
 
             <div class="funnel">
               <div class="funnel-step">
-                <strong>8</strong>
-                <span>Nuevos</span>
-                <div class="bar">
-                  <div style="width: 100%"></div>
-                </div>
+                <strong>{{ prospects().length }}</strong>
+                <span>Totales</span>
+                <div class="bar"><div style="width: 100%"></div></div>
               </div>
 
               <div class="funnel-step">
-                <strong>5</strong>
+                <strong>{{ seguimientos().length }}</strong>
                 <span>Seguimiento</span>
                 <div class="bar">
-                  <div style="width: 70%"></div>
-                </div>
-              </div>
-
-              <div class="funnel-step">
-                <strong>3</strong>
-                <span>Interesados</span>
-                <div class="bar">
-                  <div style="width: 45%"></div>
+                  <div [style.width]="prospects().length ? (seguimientos().length / prospects().length * 100) + '%' : '0%'"></div>
                 </div>
               </div>
 
               <div class="funnel-step converted">
-                <strong>2</strong>
+                <strong>{{ metrics().convertidos }}</strong>
                 <span>Convertidos</span>
                 <div class="bar">
-                  <div style="width: 30%"></div>
+                  <div [style.width]="prospects().length ? (metrics().convertidos / prospects().length * 100) + '%' : '0%'"></div>
                 </div>
               </div>
             </div>
@@ -248,75 +217,52 @@
                 <span>⚡</span>
                 <h3>Insights IA</h3>
               </div>
-
               <div class="bulb">💡</div>
             </div>
 
             <div class="insight-list">
               <p>
-                💡 Muchos prospectos recientes preguntan por
-                <strong>presupuesto detallado</strong> antes del primer contacto.
+                💡 Tienes <strong>{{ metrics().total }} prospectos</strong> registrados en tu cuenta.
               </p>
-
               <p>
-                💡 Hay <strong>3 clientes</strong> que no han recibido seguimiento en más de 48 horas.
+                💡 Hay <strong>{{ metrics().alta_prioridad }} tareas</strong> de alta prioridad pendientes.
               </p>
-
               <p>
-                💡 La objeción más repetida es:
-                <strong>precio y facilidad de uso</strong>.
+                💡 <strong>{{ metrics().sin_seguimiento }} prospectos</strong> aún no han recibido seguimiento.
               </p>
             </div>
 
-            <button class="report-button">
-              Generar informe completo
-            </button>
+            <a class="report-button" routerLink="/importar">
+              + Importar conversación
+            </a>
           </article>
 
-          <!-- Recent Activity -->
+          <!-- Recent Prospects -->
           <article class="panel activity-panel">
             <div class="panel-header">
               <div>
-                <h3>Actividad reciente</h3>
-                <p>Últimos movimientos comerciales.</p>
+                <h3>Prospectos recientes</h3>
+                <p>Últimos prospectos registrados.</p>
               </div>
-
-              <span>↻</span>
             </div>
 
             <div class="activity-list">
-              <div class="activity-item">
-                <div class="activity-avatar border-red">M</div>
-
-                <div>
-                  <strong>María — Pastelería</strong>
-                  <p>Alta prioridad</p>
-                </div>
-
-                <small>Hace 10 min</small>
-              </div>
-
-              <div class="activity-item">
-                <div class="activity-avatar">JP</div>
-
-                <div>
-                  <strong>Juan Pérez</strong>
-                  <p>Seguimiento enviado</p>
-                </div>
-
-                <small>Hace 1h</small>
-              </div>
-
-              <div class="activity-item">
-                <div class="activity-avatar">CL</div>
-
-                <div>
-                  <strong>Clínica Dental</strong>
-                  <p>Conversación subida</p>
-                </div>
-
-                <small>Hace 3h</small>
-              </div>
+              @if (recentProspects.length === 0) {
+                <p style="padding: 1rem; color: #888;">
+                  Aún no hay prospectos. <a routerLink="/importar">Importa tu primera conversación.</a>
+                </p>
+              } @else {
+                @for (p of recentProspects; track p.id) {
+                  <div class="activity-item">
+                    <div class="activity-avatar border-red">{{ initials(p.nombre) }}</div>
+                    <div>
+                      <strong>{{ p.nombre }}</strong>
+                      <p>{{ p.tipo_negocio }} · Score {{ p.score_conversion }}</p>
+                    </div>
+                    <small>{{ p.estado }}</small>
+                  </div>
+                }
+              }
             </div>
           </article>
 
@@ -331,12 +277,11 @@
 
             <div class="marketing-suggestion">
               <span>📣</span>
-
               <div>
                 <strong>Crear contenido sobre SIAT</strong>
                 <p>
-                  Publicar un reel corto: “Cómo empezar a facturar electrónicamente
-                  sin complicarte con el SIAT”.
+                  Publicar un reel corto: "Cómo empezar a facturar electrónicamente
+                  sin complicarte con el SIAT".
                 </p>
               </div>
             </div>

@@ -10,59 +10,23 @@
     </div>
 
     <nav class="nav-menu">
-      <a class="nav-item" href="/dashboard">
-        <span>⌂</span>
-        Inicio
-      </a>
-
-      <a class="nav-item active" href="/resultado-ia">
-        <span>☷</span>
-        Prospectos
-      </a>
-
-      <a class="nav-item" href="/importar">
-        <span>⇪</span>
-        Importar
-      </a>
-
-      <a class="nav-item" href="/seguimientos">
-        <span>☑</span>
-        Seguimientos
-      </a>
-
-      <a class="nav-item" href="/insights">
-        <span>✦</span>
-        Insights
-      </a>
-
-      <a class="nav-item" href="#">
-        <span>⚙</span>
-        Configuración
-      </a>
+      <a class="nav-item" routerLink="/dashboard"><span>⌂</span>Inicio</a>
+      <a class="nav-item active" routerLink="/resultado-ia"><span>☷</span>Prospectos</a>
+      <a class="nav-item" routerLink="/importar"><span>⇪</span>Importar</a>
+      <a class="nav-item" routerLink="/seguimientos"><span>☑</span>Seguimientos</a>
+      <a class="nav-item" routerLink="/insights"><span>✦</span>Insights</a>
     </nav>
-
-    <div class="sidebar-profile">
-      <div class="profile-avatar">LA</div>
-      <div>
-        <strong>Laura</strong>
-        <p>Sales Lead</p>
-      </div>
-    </div>
   </aside>
 
   <!-- Main -->
   <main class="result-main">
-    <!-- Topbar -->
     <header class="topbar">
       <div class="topbar-title">
         <h2>Resultado IA</h2>
-        <p>Análisis comercial generado desde la conversación importada.</p>
+        <p>Revisa, edita y guarda el análisis generado.</p>
       </div>
-
       <div class="top-actions">
-        <a class="upload-button" href="/importar">+ Subir conversación</a>
-        <button class="icon-button">🔔</button>
-        <button class="user-button">LA</button>
+        <a class="upload-button" routerLink="/importar">+ Nueva conversación</a>
       </div>
     </header>
 
@@ -70,55 +34,64 @@
       <div class="page-heading">
         <span class="eyebrow">Diagnóstico comercial listo</span>
         <h1>Prospecto analizado con IA</h1>
-        <p>
-          La conversación fue procesada para identificar perfil, dolor principal,
-          objeciones, plan recomendado, incentivo y siguiente acción comercial.
-        </p>
+        <p>Puedes editar cualquier campo antes de guardar.</p>
       </div>
+
+      <!-- Mensajes de estado -->
+      @if (errorMsg()) {
+        <div style="margin-bottom:1rem; padding:0.75rem 1rem; background:#fee2e2; border-radius:8px; color:#dc2626;">
+          {{ errorMsg() }}
+        </div>
+      }
+      @if (successMsg()) {
+        <div style="margin-bottom:1rem; padding:0.75rem 1rem; background:#dcfce7; border-radius:8px; color:#16a34a;">
+          ✓ {{ successMsg() }}
+        </div>
+      }
 
       <section class="result-grid">
         <!-- Left column -->
         <div class="left-column">
-          <!-- Basic Info -->
+
+          <!-- Información básica -->
           <article class="panel basic-panel">
             <div class="panel-header">
               <div class="title-with-icon">
                 <span>👤</span>
                 <div>
                   <h3>Información básica</h3>
-                  <p>Datos principales del prospecto detectado.</p>
+                  <p>Datos principales del prospecto.</p>
                 </div>
               </div>
-
               <div class="score-badge">
-                Score: <strong>87/100</strong>
+                Score: <strong>{{ score_conversion }}/100</strong>
               </div>
             </div>
 
             <div class="basic-grid">
               <div class="info-item">
                 <span>Nombre</span>
-                <strong>María Fernández</strong>
+                <input type="text" [(ngModel)]="nombre" name="nombre" class="edit-input" />
               </div>
 
               <div class="info-item">
                 <span>WhatsApp</span>
-                <strong>71234567</strong>
+                <input type="text" [(ngModel)]="celular" name="celular" class="edit-input" />
               </div>
 
               <div class="info-item">
-                <span>Empresa</span>
-                <strong>Pastelería Dulce Arte</strong>
+                <span>Tipo de negocio</span>
+                <input type="text" [(ngModel)]="tipo_negocio" name="tipo_negocio" class="edit-input" />
               </div>
 
               <div class="info-item">
-                <span>Ciudad</span>
-                <strong>Cochabamba</strong>
+                <span>Perfil cliente</span>
+                <input type="text" [(ngModel)]="perfil_cliente" name="perfil_cliente" class="edit-input" />
               </div>
             </div>
           </article>
 
-          <!-- IA Analysis -->
+          <!-- Análisis IA -->
           <article class="panel">
             <div class="panel-header">
               <div class="title-with-icon">
@@ -131,95 +104,95 @@
             </div>
 
             <div class="analysis-grid">
-              <div class="analysis-card">
-                <span>Buyer persona</span>
-                <strong>Emprendedora</strong>
-                <p>Negocio en crecimiento que necesita empezar a facturar.</p>
-              </div>
-
               <div class="analysis-card danger">
-                <span>Pain point</span>
-                <strong>Facturación</strong>
-                <p>Necesita regularizar ventas sin complicarse con tecnología.</p>
+                <span>Dolor principal</span>
+                <input type="text" [(ngModel)]="dolor_principal" name="dolor_principal" class="edit-input" />
               </div>
 
               <div class="analysis-card warning">
                 <span>Objeción principal</span>
-                <strong>Presupuesto</strong>
-                <p>Temor a que el sistema sea caro o difícil de sostener.</p>
+                <input type="text" [(ngModel)]="objecion_principal" name="objecion_principal" class="edit-input" />
               </div>
 
-              <div class="analysis-card success">
-                <span>Nivel de interés</span>
-                <strong>Alto</strong>
-                <p>Pregunta por solución y muestra necesidad inmediata.</p>
+              <div class="analysis-card" style="grid-column: span 2">
+                <span>Resumen</span>
+                <textarea [(ngModel)]="resumen" name="resumen" class="edit-input" rows="3"></textarea>
               </div>
             </div>
           </article>
 
-          <!-- Recommendation -->
+          <!-- Recomendación -->
           <article class="panel recommendation-panel">
             <div class="panel-header">
               <div class="title-with-icon">
                 <span>🚀</span>
                 <div>
                   <h3>Recomendación IA</h3>
-                  <p>Acción sugerida para aumentar probabilidad de conversión.</p>
+                  <p>Acción para aumentar la conversión.</p>
                 </div>
               </div>
-
-              <div class="sparkles">✦</div>
             </div>
 
             <div class="recommendation-grid">
               <div class="mini-card">
                 <span>Plan recomendado</span>
-                <strong>Básico</strong>
-                <p>Ideal para una sucursal y hasta 100 facturas mensuales.</p>
+                <input type="text" [(ngModel)]="plan_recomendado" name="plan_recomendado" class="edit-input" />
               </div>
 
               <div class="mini-card">
-                <span>Incentivo</span>
-                <strong>25% descuento</strong>
-                <p>Aplicable como impulso inicial o plan anual.</p>
+                <span>Estado</span>
+                <select [(ngModel)]="estado" name="estado" class="edit-input">
+                  <option value="nuevo">Nuevo</option>
+                  <option value="en_seguimiento">En seguimiento</option>
+                  <option value="interesado">Interesado</option>
+                  <option value="convertido">Convertido</option>
+                </select>
               </div>
+            </div>
+          </article>
 
-              <div class="mini-card">
-                <span>Siguiente acción</span>
-                <strong>Enviar demo</strong>
-                <p>Mostrar uso simple y acompañamiento inicial.</p>
+          <!-- Seguimiento -->
+          <article class="panel">
+            <div class="panel-header">
+              <div class="title-with-icon">
+                <span>📋</span>
+                <div>
+                  <h3>Seguimiento sugerido</h3>
+                  <p>Acción que se creará como tarea pendiente.</p>
+                </div>
               </div>
             </div>
 
-            <div class="message-template">
-              <div class="template-header">
-                <strong>Mensaje sugerido para WhatsApp</strong>
-                <button type="button">Copiar</button>
+            <div class="analysis-grid">
+              <div class="analysis-card" style="grid-column: span 2">
+                <span>Acción recomendada</span>
+                <input type="text" [(ngModel)]="accion_seguimiento" name="accion" class="edit-input" />
               </div>
 
-              <p>
-                Hola, María 👋. Vimos que tu pastelería está creciendo y que
-                necesitas empezar a facturar sin complicarte. ItDux puede ayudarte
-                con una plataforma sencilla, económica y compatible con SIAT.
-                Para tu caso recomendamos el plan Básico y podemos acompañarte
-                paso a paso para emitir tu primera factura. ¿Te gustaría que te
-                enviemos una demo breve?
-              </p>
+              <div class="analysis-card">
+                <span>Prioridad</span>
+                <select [(ngModel)]="prioridad_seguimiento" name="prioridad" class="edit-input">
+                  <option value="alta">Alta</option>
+                  <option value="media">Media</option>
+                  <option value="baja">Baja</option>
+                </select>
+              </div>
             </div>
           </article>
 
           <!-- Actions -->
           <div class="action-row">
-            <a class="primary-action" href="/dashboard">
-              💾 Guardar prospecto
-            </a>
+            <button
+              type="button"
+              class="primary-action"
+              (click)="guardar()"
+              [disabled]="saving()"
+            >
+              {{ saving() ? '⏳ Guardando...' : '💾 Guardar prospecto' }}
+            </button>
 
-            <a class="secondary-action" href="/importar">
-              ✎ Editar análisis
-            </a>
-
-            <a class="outline-action" href="/importar">
-              ⟳ Reanalizar
+            <a class="outline-action" routerLink="/importar">
+              ⟳ Nueva conversación
             </a>
           </div>
         </div>
@@ -228,32 +201,32 @@
         <aside class="right-column">
           <article class="panel priority-panel">
             <div class="priority-circle">
-              <span>87</span>
+              <span>{{ score_conversion }}</span>
               <small>/100</small>
             </div>
 
-            <h3>Prioridad alta</h3>
+            <h3>
+              @if (score_conversion >= 80) { Prioridad alta }
+              @else if (score_conversion >= 50) { Prioridad media }
+              @else { Prioridad baja }
+            </h3>
 
             <p>
-              Este prospecto debe ser atendido hoy. Presenta una necesidad clara,
-              sensibilidad al precio y alta posibilidad de conversión si se le
-              ofrece una demo simple.
+              Score calculado en base al nivel de interés, urgencia y perfil del prospecto detectados en la conversación.
             </p>
 
             <div class="priority-list">
               <div>
-                <span>Urgencia</span>
-                <strong>Alta</strong>
+                <span>Plan recomendado</span>
+                <strong>{{ plan_recomendado }}</strong>
               </div>
-
               <div>
-                <span>Riesgo de abandono</span>
-                <strong>Medio</strong>
+                <span>Perfil</span>
+                <strong>{{ perfil_cliente }}</strong>
               </div>
-
               <div>
-                <span>Potencial</span>
-                <strong>Medio-alto</strong>
+                <span>Estado</span>
+                <strong>{{ estado }}</strong>
               </div>
             </div>
           </article>
@@ -271,7 +244,7 @@
                 <span></span>
                 <div>
                   <strong>Hoy</strong>
-                  <p>Enviar mensaje personalizado y demo breve.</p>
+                  <p>{{ accion_seguimiento || 'Enviar mensaje personalizado.' }}</p>
                 </div>
               </div>
 
@@ -279,7 +252,7 @@
                 <span></span>
                 <div>
                   <strong>Mañana</strong>
-                  <p>Confirmar si revisó la demo y resolver dudas.</p>
+                  <p>Confirmar si revisó la propuesta y resolver dudas.</p>
                 </div>
               </div>
 
@@ -289,26 +262,6 @@
                   <strong>48 horas</strong>
                   <p>Ofrecer acompañamiento para la primera factura.</p>
                 </div>
-              </div>
-            </div>
-          </article>
-
-          <article class="panel marketing-panel">
-            <div class="panel-header">
-              <div>
-                <h3>Insight marketing</h3>
-                <p>Aprendizaje útil para futuras campañas.</p>
-              </div>
-            </div>
-
-            <div class="marketing-box">
-              <span>📣</span>
-              <div>
-                <strong>Crear contenido para emprendedoras</strong>
-                <p>
-                  Publicar una pieza educativa: “Cómo empezar a facturar
-                  electrónicamente desde un negocio pequeño sin complicarte”.
-                </p>
               </div>
             </div>
           </article>

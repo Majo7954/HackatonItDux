@@ -1,6 +1,6 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Sidebar } from '../../shared/sidebar/sidebar';
 import { AnalizarConversacionService } from '../../core/services/analizar-conversacion.service';
 import JSZip from 'jszip';
@@ -11,15 +11,24 @@ import JSZip from 'jszip';
   templateUrl: './import-chat.html',
   styleUrl: './import-chat.scss',
 })
-export class ImportChat {
+export class ImportChat implements OnInit {
   private readonly analizarSvc = inject(AnalizarConversacionService);
   private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
 
   conversacion = '';
   loading = signal(false);
   errorMsg = signal('');
   fileName = signal<string | null>(null);
   fileLoading = signal(false);
+  prospectId: string | null = null;
+
+  ngOnInit() {
+    const prospectId = this.route.snapshot.queryParamMap.get('prospectId');
+    if (prospectId) {
+      this.prospectId = prospectId;
+    }
+  }
 
   async onFileSelected(event: Event): Promise<void> {
     const input = event.target as HTMLInputElement;

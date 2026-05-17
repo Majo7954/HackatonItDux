@@ -79,7 +79,7 @@
             </div>
 
             @for (seg of alta(); track seg.id) {
-              <article class="lead-card selected">
+              <a class="lead-card selected" [routerLink]="['/prospect-profile', seg.prospecto_id]">
                 <div class="card-top">
                   <span class="tag priority">Prioridad alta</span>
                   <small>{{ formatFecha(seg.fecha_recordatorio) }}</small>
@@ -96,7 +96,7 @@
                   <span>Estado: {{ seg.estado }}</span>
                   <span class="avatar-small">{{ seg.prospects ? initials(seg.prospects.nombre) : '?' }}</span>
                 </div>
-              </article>
+              </a>
             }
 
             @if (alta().length === 0) {
@@ -115,7 +115,7 @@
             </div>
 
             @for (seg of media(); track seg.id) {
-              <article class="lead-card">
+              <a class="lead-card" [routerLink]="['/prospect-profile', seg.prospecto_id]">
                 <div class="card-top">
                   <span class="tag waiting">Media</span>
                   <small>{{ formatFecha(seg.fecha_recordatorio) }}</small>
@@ -127,7 +127,7 @@
                 <div class="card-note">
                   {{ seg.accion }}
                 </div>
-              </article>
+              </a>
             }
 
             @if (media().length === 0) {
@@ -146,7 +146,7 @@
             </div>
 
             @for (seg of baja(); track seg.id) {
-              <article class="lead-card">
+              <a class="lead-card" [routerLink]="['/prospect-profile', seg.prospecto_id]">
                 <div class="card-top">
                   <span class="tag">Baja</span>
                   <small>{{ formatFecha(seg.fecha_recordatorio) }}</small>
@@ -158,7 +158,7 @@
                 <div class="card-note">
                   {{ seg.accion }}
                 </div>
-              </article>
+              </a>
             }
 
             @if (baja().length === 0) {
@@ -184,13 +184,13 @@
               </article>
             } @else {
               @for (seg of completados(); track seg.id) {
-                <article class="lead-card converted-card">
+                <a class="lead-card converted-card" [routerLink]="['/prospect-profile', seg.prospecto_id]">
                   <div class="card-top">
                     <span class="tag converted">Completado</span>
                   </div>
                   <h4>{{ seg.prospects?.nombre ?? 'Prospecto' }}</h4>
                   <div class="card-note success-note">✓ {{ seg.accion }}</div>
-                </article>
+                </a>
               }
             }
           </div>

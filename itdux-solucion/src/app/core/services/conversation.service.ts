@@ -19,4 +19,18 @@ export class ConversationService {
     }
     return data as Conversation;
   }
+
+  async getConversationByProspectId(prospectId: string): Promise<Conversation | null> {
+    const { data, error } = await this.supabase.client
+      .from('conversations')
+      .select('*')
+      .eq('prospect_id', prospectId)
+      .single();
+
+    if (error) {
+      console.error('Error fetching conversation by prospect id:', error.message);
+      return null;
+    }
+    return data as Conversation;
+  }
 }

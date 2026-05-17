@@ -106,7 +106,7 @@
                 </p>
               } @else {
                 @for (seg of urgentSeguimientos; track seg.id) {
-                  <div class="task-card high">
+                  <a class="task-card high" [routerLink]="['/prospect-profile', seg.prospecto_id]">
                     <div class="avatar letter-avatar">
                       {{ seg.prospects ? initials(seg.prospects.nombre) : '?' }}
                     </div>
@@ -125,8 +125,8 @@
                       </div>
                     </div>
 
-                    <a class="task-arrow" routerLink="/seguimientos">›</a>
-                  </div>
+                    <span class="task-arrow">›</span>
+                  </a>
                 }
               }
             </div>

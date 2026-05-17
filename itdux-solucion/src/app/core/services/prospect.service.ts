@@ -33,4 +33,20 @@ export class ProspectService {
     }
     return (data as Prospect[]) ?? [];
   }
+
+  async getProspectById(prospectId: string, advisorId: string): Promise<Prospect | null> {
+    const { data, error } = await this.supabase.client
+      .from('prospects')
+      .select('*')
+      .eq('id', prospectId)
+      .eq('advisor_id', advisorId)
+      .single();
+
+    if (error) {
+      console.error('Error fetching prospect by id:', error.message);
+      return null;
+    }
+
+    return data as Prospect;
+  }
 }

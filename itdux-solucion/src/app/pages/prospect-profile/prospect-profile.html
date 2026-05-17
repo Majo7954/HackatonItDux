@@ -14,7 +14,7 @@
     <!-- Topbar -->
     <header class="topbar">
       <div class="topbar-left">
-        <a class="back-button" href="/resultado-ia">←</a>
+        <a class="back-button" routerLink="/dashboard">←</a>
 
         <div>
           <h2>Detalle del prospecto</h2>
@@ -23,28 +23,34 @@
       </div>
 
       <div class="top-actions">
-        <a class="upload-button" href="/importar">+ Subir conversación</a>
+        <a class="upload-button" [routerLink]="['/importar']" [queryParams]="{ prospectId: prospect()?.id }">+ Actualizar con nueva conversación</a>
         <button class="icon-button">🔔</button>
         <button class="user-button">LA</button>
       </div>
     </header>
 
     <section class="content">
+      @if (errorMsg()) {
+        <div class="error-banner" style="margin-bottom: 1rem; padding: 1rem; border-radius: 12px; background: #fee2e2; color: #b91c1c;">
+          {{ errorMsg() }}
+        </div>
+      }
+
       <!-- Hero profile -->
       <article class="profile-hero">
         <div class="hero-background"></div>
 
         <div class="hero-content">
-          <div class="avatar-large">MF</div>
+          <div class="avatar-large">{{ prospect() ? initials(prospect()?.nombre ?? '') : '??' }}</div>
 
-          <h1>María Fernández</h1>
+          <h1>{{ prospect()?.nombre ?? 'Prospecto' }}</h1>
 
-          <p>Pastelería “Dulce Arte”</p>
+          <p>{{ prospect()?.tipo_negocio ?? 'Negocio no definido' }}</p>
 
           <div class="profile-badges">
             <span class="hot-badge">● Prospecto caliente</span>
-            <span class="score-badge">Score: 87/100</span>
-            <span class="plan-badge">Plan sugerido: Básico</span>
+            <span class="score-badge">Score: {{ prospect()?.score_conversion ?? 0 }}/100</span>
+            <span class="plan-badge">Plan sugerido: {{ prospect()?.plan_recomendado ?? 'N/A' }}</span>
           </div>
         </div>
 
@@ -53,31 +59,23 @@
             <span>☎</span>
             <div>
               <small>Teléfono</small>
-              <strong>+591 71234567</strong>
+              <strong>{{ prospect()?.celular ?? 'Sin teléfono' }}</strong>
             </div>
           </div>
 
           <div class="contact-item">
-            <span>✉</span>
+            <span>📌</span>
             <div>
-              <small>Correo</small>
-              <strong>maria&#64;dulcearte.bo</strong>
-            </div>
-          </div>
-
-          <div class="contact-item">
-            <span>📍</span>
-            <div>
-              <small>Ciudad</small>
-              <strong>Cochabamba</strong>
+              <small>Estado</small>
+              <strong>{{ prospect()?.estado ?? 'Sin estado' }}</strong>
             </div>
           </div>
 
           <div class="contact-item">
             <span>🕒</span>
             <div>
-              <small>Último contacto</small>
-              <strong>Hace 4 días</strong>
+              <small>Creado</small>
+              <strong>{{ prospect()?.created_at ? formatShortDate(prospect()?.created_at) : 'Sin fecha' }}</strong>
             </div>
           </div>
         </div>
@@ -87,18 +85,16 @@
       <article class="ai-banner">
         <div>
           <span>✨ AI Insight</span>
-          <h3>Alta probabilidad de cierre este mes</h3>
+          <h3>Resumen de conversación</h3>
           <p>
-            María busca empezar a facturar por obligación y muestra preocupación
-            por precio y facilidad de uso. El sistema recomienda una demo breve,
-            acompañamiento en su primera factura y una explicación clara del plan básico.
+            {{ conversation()?.resumen ?? 'Aún no existe un resumen de conversación para este prospecto.' }}
           </p>
         </div>
 
         <div class="ai-tags">
-          <span>Recurrencia</span>
-          <span>Facilidad de uso</span>
-          <span>Presupuesto</span>
+          <span>{{ prospect()?.tipo_negocio ?? 'Negocio' }}</span>
+          <span>{{ prospect()?.estado ?? 'Estado' }}</span>
+          <span>{{ prospect()?.plan_recomendado ?? 'Plan' }}</span>
         </div>
       </article>
 
@@ -120,15 +116,13 @@
                 <span class="section-label">Contexto del negocio</span>
 
                 <p>
-                  Pastelería artesanal en expansión, con ventas constantes por redes
-                  sociales y pedidos recurrentes. La prospecto necesita comenzar a
-                  facturar electrónicamente sin complicarse con procesos técnicos.
+                  {{ conversation()?.resumen ?? 'Este prospecto aún no tiene conversación registrada.' }}
                 </p>
 
                 <div class="pain-box">
                   <small>Pain point principal</small>
                   <strong>
-                    “Me preocupa que el sistema sea caro o complicado de usar.”
+                    {{ conversation()?.dolor_principal ? '“' + conversation()?.dolor_principal + '”' : 'No hay dolor principal definido.' }}
                   </strong>
                 </div>
               </div>
@@ -137,17 +131,19 @@
                 <span class="section-label">Potencial de venta</span>
 
                 <div class="amount">
-                  Bs 840
-                  <small>Valor anual estimado</small>
+                  {{ prospect()?.score_conversion ?? 0 }} / 100
+                  <small>Score comercial</small>
                 </div>
 
                 <div class="progress">
-                  <span></span>
+                  <span [style.width]="(prospect()?.score_conversion ?? 0) + '%'" ></span>
                 </div>
 
                 <p>
                   Confianza en el cierre:
-                  <strong>Muy alta</strong>
+                  <strong>
+                    {{ (prospect()?.score_conversion ?? 0) >= 70 ? 'Alta' : 'Moderada' }}
+                  </strong>
                 </p>
               </div>
             </div>
@@ -195,31 +191,30 @@
         <aside class="right-column">
           <article class="panel score-panel">
             <div class="score-circle">
-              <span>87</span>
+              <span>{{ prospect()?.score_conversion ?? 0 }}</span>
               <small>/100</small>
             </div>
 
             <h3>Prospecto prioritario</h3>
 
             <p>
-              Alta intención de compra. Conviene realizar seguimiento hoy con un
-              mensaje educativo y cercano.
+              {{ prospect()?.tipo_negocio ? 'Prioridad para ' + prospect()?.tipo_negocio : 'Información de prospecto en proceso de carga.' }}
             </p>
 
             <div class="score-list">
               <div>
                 <span>Urgencia</span>
-                <strong>Alta</strong>
+                <strong>{{ prospect()?.estado ? 'Alta' : 'Media' }}</strong>
               </div>
 
               <div>
                 <span>Objeción</span>
-                <strong>Precio</strong>
+                <strong>{{ conversation()?.objecion_principal ?? 'No registrada' }}</strong>
               </div>
 
               <div>
                 <span>Interés</span>
-                <strong>Alto</strong>
+                <strong>{{ (prospect()?.score_conversion ?? 0) >= 70 ? 'Alto' : 'Moderado' }}</strong>
               </div>
             </div>
           </article>
@@ -238,13 +233,12 @@
               <div>
                 <strong>Enviar mensaje personalizado</strong>
                 <p>
-                  Explicar el plan Básico, reforzar facilidad de uso y ofrecer
-                  acompañamiento para la primera factura.
+                  {{ prospect()?.plan_recomendado ? 'Ofrecer el plan ' + prospect()?.plan_recomendado + ' y acompañar la primera factura.' : 'Recomendar demo y aclarar dudas sobre la oferta.' }}
                 </p>
               </div>
             </div>
 
-            <a class="primary-button" href="/seguimientos">
+            <a class="primary-button" routerLink="/seguimientos">
               Agendar seguimiento
             </a>
           </article>
@@ -258,11 +252,10 @@
             </div>
 
             <div class="message-box">
-              Hola, María 👋. Vimos que tu pastelería está creciendo y que
-              necesitas empezar a facturar sin complicarte. ItDux puede ayudarte
-              con una plataforma sencilla, económica y compatible con SIAT.
-              Podemos acompañarte paso a paso para emitir tu primera factura.
-              ¿Te gustaría que te enviemos una demo breve?
+              Hola, {{ prospect()?.nombre ?? 'prospecto' }} 👋. Hemos revisado tu caso y creemos que
+              {{ prospect()?.plan_recomendado ? 'el plan ' + prospect()?.plan_recomendado + ' encaja mejor' : 'podemos recomendar una opción ideal' }}.
+              Podemos ayudarte con una propuesta clara y acompañarte durante la primera factura.
+              ¿Quieres agendar una llamada de seguimiento?
             </div>
 
             <button class="copy-button">Copiar mensaje</button>

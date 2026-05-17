@@ -1,13 +1,5 @@
 <div class="insights-layout">
-  <app-sidebar activePath="insights">
-    <div class="sidebar-profile">
-      <div class="profile-avatar">LA</div>
-      <div>
-        <strong>Laura</strong>
-        <p>Sales Lead</p>
-      </div>
-    </div>
-  </app-sidebar>
+  <app-sidebar activePath="insights"></app-sidebar>
 
   <!-- Main -->
   <main class="insights-main">
@@ -19,9 +11,9 @@
       </div>
 
       <div class="top-actions">
-        <a class="upload-button" href="/importar">+ Subir conversación</a>
+        <a class="upload-button" routerLink="/importar">+ Subir conversación</a>
         <button class="icon-button">🔔</button>
-        <button class="user-button">LA</button>
+        <button class="user-button">{{ advisor() ? initials(advisor()!.nombre) : '?' }}</button>
       </div>
     </header>
 
@@ -196,88 +188,9 @@
             </div>
           </div>
 
-          <div class="analysis-footer">
-            <div class="avatar-stack">
-              <span>LA</span>
-              <span>AR</span>
-              <span>+5</span>
-            </div>
-
-            <p>Analizado por 8 miembros del equipo comercial.</p>
-          </div>
-        </article>
+          </article>
       </section>
 
-      <!-- Strategic recommendations -->
-      <section class="recommendations-grid">
-        <article class="panel recommendation-card">
-          <div class="recommendation-icon">🎯</div>
-
-          <div>
-            <span class="card-label">Insight de conversión</span>
-            <h3>Atender rápido a prospectos API</h3>
-            <p>
-              Detectamos que las conversaciones donde el cliente pregunta por
-              <strong>API de integración</strong> tienen mayor probabilidad de
-              cierre cuando se agenda una reunión técnica antes de 24 horas.
-            </p>
-          </div>
-
-          <button type="button">Configurar alerta IA</button>
-        </article>
-
-        <article class="panel recommendation-card">
-          <div class="recommendation-icon">📣</div>
-
-          <div>
-            <span class="card-label">Recomendación de marketing</span>
-            <h3>Crear contenido sobre SIAT y precios</h3>
-            <p>
-              Las objeciones más repetidas están relacionadas con presupuesto,
-              cumplimiento SIAT y facilidad de uso. Se recomienda una campaña
-              educativa con ejemplos simples para PYMES.
-            </p>
-          </div>
-
-          <button type="button">Crear campaña</button>
-        </article>
-      </section>
-
-      <!-- Content ideas -->
-      <section class="panel content-ideas">
-        <div class="panel-header">
-          <div>
-            <h3>Ideas de contenido sugeridas por IA</h3>
-            <p>Temas para redes sociales, WhatsApp y campañas comerciales.</p>
-          </div>
-        </div>
-
-        <div class="ideas-grid">
-          <div class="idea-card">
-            <span>01</span>
-            <strong>¿Cómo empezar a facturar electrónicamente en Bolivia?</strong>
-            <p>Contenido educativo para prospectos con dudas sobre SIAT.</p>
-          </div>
-
-          <div class="idea-card">
-            <span>02</span>
-            <strong>Comparativa simple de planes ItDux</strong>
-            <p>Explicar Básico, Profesional y Empresarial con casos reales.</p>
-          </div>
-
-          <div class="idea-card">
-            <span>03</span>
-            <strong>Guía para emitir tu primera factura</strong>
-            <p>Refuerza facilidad de uso y reduce miedo técnico.</p>
-          </div>
-
-          <div class="idea-card">
-            <span>04</span>
-            <strong>Automatización con API para empresas</strong>
-            <p>Campaña dirigida a prospectos técnicos y empresas con web propia.</p>
-          </div>
-        </div>
-      </section>
     </section>
   </main>
 </div>

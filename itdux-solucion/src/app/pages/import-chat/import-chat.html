@@ -18,6 +18,11 @@
           Pega la conversación del prospecto para detectar buyer persona, dolor,
           plan recomendado, score e incentivo.
         </p>
+        @if (prospectId) {
+          <div style="margin-top: 1rem; padding: 1rem; border-radius: 12px; background: #eef2ff; color: #3730a3;">
+            Esta conversación se asignará al prospecto actual para actualizar su perfil.
+          </div>
+        }
       </div>
 
       <!-- Upload file section -->

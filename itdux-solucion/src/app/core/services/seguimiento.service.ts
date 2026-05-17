@@ -33,4 +33,19 @@ export class SeguimientoService {
     }
     return (data as Seguimiento[]) ?? [];
   }
+
+  async getSeguimientosByProspectId(prospectId: string, advisorId: string): Promise<Seguimiento[]> {
+    const { data, error } = await this.supabase.client
+      .from('seguimientos')
+      .select('*')
+      .eq('prospecto_id', prospectId)
+      .eq('asesor_id', advisorId)
+      .order('fecha_recordatorio', { ascending: true });
+
+    if (error) {
+      console.error('Error fetching seguimientos by prospect id:', error.message);
+      return [];
+    }
+    return (data as Seguimiento[]) ?? [];
+  }
 }

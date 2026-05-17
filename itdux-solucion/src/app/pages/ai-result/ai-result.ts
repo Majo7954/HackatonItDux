@@ -5,7 +5,6 @@ import { AuthService } from '../../core/services/auth.service';
 import { ProspectService } from '../../core/services/prospect.service';
 import { ConversationService } from '../../core/services/conversation.service';
 import { SeguimientoService } from '../../core/services/seguimiento.service';
-import type { AnalysisResult } from '../../core/models/types';
 
 @Component({
   selector: 'app-ai-result',
@@ -20,7 +19,6 @@ export class AiResult implements OnInit {
   private readonly seguimientoSvc = inject(SeguimientoService);
   private readonly router = inject(Router);
 
-  // Formulario editable — se pre-llena desde el resultado de la IA
   nombre = '';
   celular = '';
   tipo_negocio = '';
@@ -40,39 +38,83 @@ export class AiResult implements OnInit {
   successMsg = signal('');
 
   ngOnInit() {
+    console.log('📋 Inicializando ai-result...');
+
     const raw = sessionStorage.getItem('itdux_analysis');
+
     if (!raw) {
       this.errorMsg.set('No hay resultado de análisis. Importa una conversación primero.');
       return;
     }
 
-    const data: AnalysisResult = JSON.parse(raw);
-    this.nombre = data.nombre;
-    this.celular = data.celular;
-    this.tipo_negocio = data.tipo_negocio;
-    this.perfil_cliente = data.perfil_cliente;
-    this.score_conversion = data.score_conversion;
-    this.plan_recomendado = data.plan_recomendado;
-    this.estado = data.estado;
-    this.dolor_principal = data.dolor_principal;
-    this.objecion_principal = data.objecion_principal;
-    this.resumen = data.resumen;
-    this.accion_seguimiento = data.seguimiento?.accion ?? '';
-    this.prioridad_seguimiento = data.seguimiento?.prioridad ?? 'media';
+    try {
+      const data: any = JSON.parse(raw);
+
+      console.log('🔍 RAW SESSION:', raw);
+      console.log('🔍 DATA COMPLETA AI RESULT:', data);
+
+      this.nombre = data.nombre ?? data.name ?? '';
+      this.celular = data.celular ?? data.whatsapp ?? data.telefono ?? data.phone ?? '';
+      this.tipo_negocio = data.tipo_negocio ?? data.tipoNegocio ?? data.negocio ?? data.business_type ?? '';
+      this.perfil_cliente = data.perfil_cliente ?? data.perfilCliente ?? data.perfil ?? data.customer_profile ?? '';
+      this.score_conversion = Number(data.score_conversion ?? data.score ?? data.scoreConversion ?? 0);
+      this.plan_recomendado = data.plan_recomendado ?? data.planRecomendado ?? data.plan ?? '';
+      this.estado = data.estado ?? data.status ?? 'nuevo';
+      this.dolor_principal = data.dolor_principal ?? data.dolorPrincipal ?? data.dolor ?? data.pain_point ?? '';
+      this.objecion_principal = data.objecion_principal ?? data.objecionPrincipal ?? data.objecion ?? data.objection ?? '';
+      this.resumen = data.resumen ?? data.summary ?? '';
+
+      this.accion_seguimiento =
+        data.seguimiento?.accion ??
+        data.follow_up?.action ??
+        data.accion_seguimiento ??
+        data.accionSeguimiento ??
+        '';
+
+      this.prioridad_seguimiento =
+        data.seguimiento?.prioridad ??
+        data.follow_up?.priority ??
+        data.prioridad_seguimiento ??
+        data.prioridadSeguimiento ??
+        'media';
+
+      console.log('✅ Campos cargados en pantalla:', {
+        nombre: this.nombre,
+        celular: this.celular,
+        tipo_negocio: this.tipo_negocio,
+        perfil_cliente: this.perfil_cliente,
+        score_conversion: this.score_conversion,
+        plan_recomendado: this.plan_recomendado,
+        estado: this.estado,
+        dolor_principal: this.dolor_principal,
+        objecion_principal: this.objecion_principal,
+        resumen: this.resumen,
+        accion_seguimiento: this.accion_seguimiento,
+        prioridad_seguimiento: this.prioridad_seguimiento,
+      });
+
+      if (!this.nombre && !this.celular) {
+        console.warn('⚠️ La respuesta no trae nombre/celular. Revisa la Edge Function.');
+      }
+    } catch (err) {
+      console.error('❌ Error parseando sessionStorage:', err);
+      this.errorMsg.set('Error al cargar el análisis. El formato de datos es inválido.');
+    }
   }
 
   async guardar() {
+    console.log('💾 Iniciando guardado de prospecto...');
     this.saving.set(true);
     this.errorMsg.set('');
 
     const user = await this.auth.getUser();
+
     if (!user) {
       this.errorMsg.set('Sesión expirada. Por favor inicia sesión nuevamente.');
       this.saving.set(false);
       return;
     }
 
-    // 1. Crear prospecto
     const prospecto = await this.prospectSvc.createProspect({
       advisor_id: user.id,
       nombre: this.nombre,
@@ -90,8 +132,8 @@ export class AiResult implements OnInit {
       return;
     }
 
-    // 2. Guardar conversación
     const conversacionTexto = sessionStorage.getItem('itdux_conversacion') ?? '';
+
     await this.conversationSvc.createConversation({
       prospect_id: prospecto.id,
       contenido: conversacionTexto,
@@ -100,7 +142,6 @@ export class AiResult implements OnInit {
       resumen: this.resumen,
     });
 
-    // 3. Crear seguimiento
     const fechaRecordatorio = new Date();
     fechaRecordatorio.setDate(fechaRecordatorio.getDate() + 1);
 
@@ -113,7 +154,6 @@ export class AiResult implements OnInit {
       prioridad: this.prioridad_seguimiento,
     });
 
-    // 4. Limpiar sesión y navegar
     sessionStorage.removeItem('itdux_analysis');
     sessionStorage.removeItem('itdux_conversacion');
 

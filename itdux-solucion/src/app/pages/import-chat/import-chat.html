@@ -37,55 +37,61 @@
         </p>
       </div>
 
+      <!-- Upload file section -->
       <section class="import-grid">
-        <article class="guide-card">
-          <div class="guide-header">
-            <span>💡</span>
-            <h3>¿Qué obtendrás?</h3>
+        <article class="upload-card">
+          <div class="upload-icon">📁</div>
+          <h3>Cargar conversación de WhatsApp</h3>
+          <p>Sube un archivo exportado desde WhatsApp (.txt o .zip) para analizar automáticamente la conversación.</p>
+          <label class="file-button">
+            @if (fileLoading()) {
+              ⏳ Cargando archivo...
+            } @else {
+              ⬆️ Seleccionar archivo
+            }
+            <input
+              type="file"
+              accept=".txt,.zip"
+              (change)="onFileSelected($event)"
+              [disabled]="fileLoading()"
+            />
+          </label>
+          <div class="file-rules">
+            <span>✓ Archivos .txt</span>
+            <span>✓ Archivos .zip</span>
           </div>
-          <div class="guide-list">
-            <div>
-              <strong>1. Ficha del prospecto</strong>
-              <p>Nombre, perfil, rubro, necesidad y estado comercial.</p>
+          @if (fileName()) {
+            <div style="margin-top: 12px; padding: 10px; background: #eff6ff; border-radius: 8px; color: #075bbd; font-size: 13px; text-align: center;">
+              📄 Archivo: {{ fileName() }}
             </div>
-            <div>
-              <strong>2. Diagnóstico IA</strong>
-              <p>Dolor principal, objeción, urgencia y prioridad.</p>
-            </div>
-            <div>
-              <strong>3. Acción recomendada</strong>
-              <p>Plan sugerido, incentivo, mensaje y seguimiento.</p>
-            </div>
-          </div>
+          }
         </article>
       </section>
 
-      <!-- Paste conversation -->
+      <!-- Paste/Edit conversation -->
       <section class="conversation-panel">
         <div class="panel-header">
           <div>
-            <h3>Pega conversación aquí</h3>
-            <p>Soporta texto copiado desde WhatsApp, Facebook, Instagram o correo.</p>
+            <h3>Editar conversación</h3>
+            <p>Revisa o edita el contenido de la conversación antes de analizar.</p>
           </div>
-          <span class="status-pill">Modo demo</span>
+          @if (fileName()) {
+            <span class="status-pill">📄 Archivo cargado</span>
+          } @else {
+            <span class="status-pill">Modo manual</span>
+          }
         </div>
 
         <textarea
           [(ngModel)]="conversacion"
           name="conversacion"
-          placeholder="Ejemplo:
+          placeholder="Carga un archivo de WhatsApp o pega la conversación aquí:
 
 Cliente: Hola, tengo una pastelería y necesito empezar a facturar.
 Cliente: Me preocupa que sea caro o complicado.
 Asesor: Claro, ¿cuántas facturas emites al mes?
 Cliente: No sé exacto, pero vendo bastante por redes sociales..."
         ></textarea>
-
-        <div class="example-row">
-          <button type="button" (click)="cargarEjemplo('maria')">Ejemplo María</button>
-          <button type="button" (click)="cargarEjemplo('rosita')">Ejemplo Rosita</button>
-          <button type="button" (click)="cargarEjemplo('rodrigo')">Ejemplo Rodrigo</button>
-        </div>
       </section>
 
       <!-- Analysis options -->

@@ -238,7 +238,7 @@
 /* Import grid */
 .import-grid {
   display: grid;
-  grid-template-columns: 1.3fr 0.7fr;
+  grid-template-columns: 1fr;
   gap: 24px;
   margin-bottom: 24px;
 }
@@ -308,6 +308,13 @@
   font-weight: 900;
   cursor: pointer;
   box-shadow: 0 12px 28px rgba(7, 91, 189, 0.22);
+  transition: 0.2s ease;
+}
+
+.file-button:has(input:disabled) {
+  background: #cbd5e1;
+  cursor: not-allowed;
+  box-shadow: none;
 }
 
 .file-button input {

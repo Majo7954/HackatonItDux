@@ -132,39 +132,6 @@
             </div>
           </article>
 
-          <!-- Funnel -->
-          <article class="panel funnel-panel">
-            <div class="panel-header">
-              <div>
-                <h3>Embudo de ventas</h3>
-                <p>Estado actual de los prospectos.</p>
-              </div>
-            </div>
-
-            <div class="funnel">
-              <div class="funnel-step">
-                <strong>{{ prospects().length }}</strong>
-                <span>Totales</span>
-                <div class="bar"><div style="width: 100%"></div></div>
-              </div>
-
-              <div class="funnel-step">
-                <strong>{{ seguimientos().length }}</strong>
-                <span>Seguimiento</span>
-                <div class="bar">
-                  <div [style.width]="prospects().length ? (seguimientos().length / prospects().length * 100) + '%' : '0%'"></div>
-                </div>
-              </div>
-
-              <div class="funnel-step converted">
-                <strong>{{ metrics().convertidos }}</strong>
-                <span>Convertidos</span>
-                <div class="bar">
-                  <div [style.width]="prospects().length ? (metrics().convertidos / prospects().length * 100) + '%' : '0%'"></div>
-                </div>
-              </div>
-            </div>
-          </article>
         </div>
 
         <!-- Right Column -->
@@ -225,26 +192,6 @@
             </div>
           </article>
 
-          <!-- Suggested Marketing -->
-          <article class="panel marketing-panel">
-            <div class="panel-header">
-              <div>
-                <h3>Recomendación marketing</h3>
-                <p>Contenido sugerido según conversaciones.</p>
-              </div>
-            </div>
-
-            <div class="marketing-suggestion">
-              <span>📣</span>
-              <div>
-                <strong>Crear contenido sobre SIAT</strong>
-                <p>
-                  Publicar un reel corto: "Cómo empezar a facturar electrónicamente
-                  sin complicarte con el SIAT".
-                </p>
-              </div>
-            </div>
-          </article>
         </div>
       </section>
     </section>

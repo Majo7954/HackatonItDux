@@ -1,6 +1,7 @@
 import { Component, inject, signal, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { Sidebar } from '../../shared/sidebar/sidebar';
 import { AuthService } from '../../core/services/auth.service';
 import { ProspectService } from '../../core/services/prospect.service';
 import { ConversationService } from '../../core/services/conversation.service';
@@ -8,7 +9,7 @@ import { SeguimientoService } from '../../core/services/seguimiento.service';
 
 @Component({
   selector: 'app-ai-result',
-  imports: [FormsModule, RouterLink],
+  imports: [FormsModule, RouterLink, Sidebar],
   templateUrl: './ai-result.html',
   styleUrl: './ai-result.scss',
 })

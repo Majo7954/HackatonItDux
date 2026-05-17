@@ -1,5 +1,6 @@
 import { Component, inject, signal, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { Sidebar } from '../../shared/sidebar/sidebar';
 import { AuthService } from '../../core/services/auth.service';
 import { AdvisorService } from '../../core/services/advisor.service';
 import { ProspectService } from '../../core/services/prospect.service';
@@ -8,7 +9,7 @@ import type { Advisor, Prospect, Seguimiento, DashboardMetrics } from '../../cor
 
 @Component({
   selector: 'app-dashboard',
-  imports: [RouterLink],
+  imports: [RouterLink, Sidebar],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
 })

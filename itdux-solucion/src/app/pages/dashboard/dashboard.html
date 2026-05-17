@@ -1,52 +1,11 @@
 <div class="dashboard-layout">
-  <!-- Sidebar -->
-  <aside class="sidebar">
-    <div class="brand">
-      <div class="brand-mark">ID</div>
-      <div>
-        <h1>ITDUX Convert 360</h1>
-        <p>AI-Driven CRM</p>
-      </div>
-    </div>
-
-    <nav class="nav-menu">
-      <a class="nav-item active" routerLink="/dashboard">
-        <span>⌂</span>
-        Inicio
-      </a>
-
-      <a class="nav-item" routerLink="/resultado-ia">
-        <span>☷</span>
-        Prospectos
-      </a>
-
-      <a class="nav-item" routerLink="/importar">
-        <span>⇪</span>
-        Importar
-      </a>
-
-      <a class="nav-item" routerLink="/seguimientos">
-        <span>☑</span>
-        Seguimientos
-      </a>
-
-      <a class="nav-item" routerLink="/insights">
-        <span>✦</span>
-        Insights
-      </a>
-
-      <a class="nav-item" href="#" (click)="logout()">
-        <span>⏻</span>
-        Cerrar sesión
-      </a>
-    </nav>
-
+  <app-sidebar activePath="dashboard">
     <div class="sidebar-card">
       <span>✨</span>
       <strong>Modo IA activo</strong>
       <p>Priorización comercial basada en conversaciones.</p>
     </div>
-  </aside>
+  </app-sidebar>
 
   <!-- Main -->
   <main class="dashboard-main">

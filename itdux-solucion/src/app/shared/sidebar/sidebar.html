@@ -1,0 +1,48 @@
+<aside class="sidebar">
+  <div class="brand">
+    <div class="brand-mark">ID</div>
+    <div>
+      <h1>ITDUX Convert 360</h1>
+      <p>AI-Driven CRM</p>
+    </div>
+  </div>
+
+  <nav class="nav-menu">
+    <a class="nav-item" routerLink="/dashboard" [class.active]="activePath === 'dashboard'">
+      <span>⌂</span>
+      Inicio
+    </a>
+
+    <a
+      *ngIf="showResultLink"
+      class="nav-item"
+      routerLink="/resultado-ia"
+      [class.active]="activePath === 'resultado-ia'"
+    >
+      <span>☷</span>
+      Resultado IA
+    </a>
+
+    <a class="nav-item" routerLink="/importar" [class.active]="activePath === 'importar'">
+      <span>⇪</span>
+      Importar
+    </a>
+
+    <a class="nav-item" routerLink="/seguimientos" [class.active]="activePath === 'seguimientos'">
+      <span>☑</span>
+      Seguimientos
+    </a>
+
+    <a class="nav-item" routerLink="/insights" [class.active]="activePath === 'insights'">
+      <span>✦</span>
+      Insights
+    </a>
+
+    <button class="nav-item" type="button" (click)="logout()">
+      <span>⏻</span>
+      Cerrar sesión
+    </button>
+  </nav>
+
+  <ng-content></ng-content>
+</aside>

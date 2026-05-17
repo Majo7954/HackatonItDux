@@ -7,6 +7,7 @@ import { AiResult } from './pages/ai-result/ai-result';
 import { FollowUps } from './pages/follow-ups/follow-ups';
 import { Insights } from './pages/insights/insights';
 import { authGuard } from './core/guards/auth.guard';
+import { analysisResultGuard } from './core/guards/analysis-result.guard';
 
 export const routes: Routes = [
   {
@@ -31,7 +32,7 @@ export const routes: Routes = [
   {
     path: 'resultado-ia',
     component: AiResult,
-    canActivate: [authGuard],
+    canActivate: [authGuard, analysisResultGuard],
   },
   {
     path: 'seguimientos',

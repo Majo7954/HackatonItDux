@@ -1,46 +1,5 @@
 <div class="profile-layout">
-  <!-- Sidebar -->
-  <aside class="sidebar">
-    <div class="brand">
-      <div class="brand-mark">ID</div>
-      <div>
-        <h1>ITDUX Convert 360</h1>
-        <p>AI-Driven CRM</p>
-      </div>
-    </div>
-
-    <nav class="nav-menu">
-      <a class="nav-item" href="/dashboard">
-        <span>⌂</span>
-        Inicio
-      </a>
-
-      <a class="nav-item active" href="/prospect-profile">
-        <span>☷</span>
-        Prospectos
-      </a>
-
-      <a class="nav-item" href="/importar">
-        <span>⇪</span>
-        Importar
-      </a>
-
-      <a class="nav-item" href="/seguimientos">
-        <span>☑</span>
-        Seguimientos
-      </a>
-
-      <a class="nav-item" href="/insights">
-        <span>✦</span>
-        Insights
-      </a>
-
-      <a class="nav-item" href="#">
-        <span>⚙</span>
-        Configuración
-      </a>
-    </nav>
-
+  <app-sidebar activePath="prospect-profile">
     <div class="sidebar-profile">
       <div class="profile-avatar-small">LA</div>
       <div>
@@ -48,7 +7,7 @@
         <p>Sales Lead</p>
       </div>
     </div>
-  </aside>
+  </app-sidebar>
 
   <!-- Main -->
   <main class="profile-main">

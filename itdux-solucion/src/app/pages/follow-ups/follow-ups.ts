@@ -1,12 +1,13 @@
 import { Component, inject, signal, OnInit, computed } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { Sidebar } from '../../shared/sidebar/sidebar';
 import { AuthService } from '../../core/services/auth.service';
 import { SeguimientoService } from '../../core/services/seguimiento.service';
 import type { Seguimiento } from '../../core/models/types';
 
 @Component({
   selector: 'app-follow-ups',
-  imports: [RouterLink],
+  imports: [RouterLink, Sidebar],
   templateUrl: './follow-ups.html',
   styleUrl: './follow-ups.scss',
 })

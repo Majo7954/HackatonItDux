@@ -2,30 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AnalizarConversacionService } from '../../core/services/analizar-conversacion.service';
-
-const EJEMPLO_MARIA = `Cliente: Hola, vendo tortas por Instagram y me dijeron que necesito facturación electrónica.
-Asesor: Claro 😊 Nosotros te ayudamos durante todo el proceso. ¿Cuánto tiempo llevas vendiendo?
-Cliente: Unos 2 años. Pero nunca facturé. Tengo miedo de que sea complicado y tampoco tengo mucho presupuesto.
-Asesor: Entiendo. Tenemos un plan básico muy accesible, ideal para emprendedoras como tú.
-Cliente: ¿De verdad? ¿Puedo hacer facturas desde el celular?
-Asesor: Sí, todo desde el celular. Te acompañamos en tu primera factura sin costo adicional.
-Cliente: Me interesa. ¿Cuánto cuesta?`;
-
-const EJEMPLO_ROSITA = `Cliente: Buenas, soy contadora y tengo varios clientes que necesitan facturación electrónica.
-Asesor: ¡Hola! ¿Cuántos clientes tienes aproximadamente?
-Cliente: Como 15 clientes, negocios pequeños. ¿Tienen algo para contadores que manejan varias empresas?
-Asesor: Sí, tenemos un plan especial para contadores con acceso multiruc.
-Cliente: Me parece interesante. ¿Cómo funciona el soporte?
-Asesor: Soporte prioritario 24/7 y capacitación para ti y tus clientes.
-Cliente: Perfecto, eso es lo que necesito.`;
-
-const EJEMPLO_RODRIGO = `Cliente: Hola, tengo una tienda con 3 sucursales y me preocupan los errores en facturas.
-Asesor: ¿Qué tipo de errores han tenido?
-Cliente: Facturas duplicadas y problemas con el SIAT. Tuvimos una multa el mes pasado.
-Asesor: Entiendo la urgencia. Nuestro plan profesional maneja multisucursal con validación SIAT en tiempo real.
-Cliente: ¿Puede integrarse con mi sistema actual?
-Asesor: Sí, tenemos API para integración. ¿Qué sistema usas?
-Cliente: Usamos un ERP propio. Necesitaría ver si es compatible antes de decidir.`;
+import JSZip from 'jszip';
 
 @Component({
   selector: 'app-import-chat',
@@ -40,34 +17,133 @@ export class ImportChat {
   conversacion = '';
   loading = signal(false);
   errorMsg = signal('');
+  fileName = signal<string | null>(null);
+  fileLoading = signal(false);
 
-  cargarEjemplo(tipo: 'maria' | 'rosita' | 'rodrigo') {
-    const ejemplos = { maria: EJEMPLO_MARIA, rosita: EJEMPLO_ROSITA, rodrigo: EJEMPLO_RODRIGO };
-    this.conversacion = ejemplos[tipo];
+  async onFileSelected(event: Event): Promise<void> {
+    const input = event.target as HTMLInputElement;
+    const files = input.files;
+
+    if (!files || files.length === 0) {
+      return;
+    }
+
+    const file = files[0];
+    this.fileLoading.set(true);
     this.errorMsg.set('');
+    this.fileName.set(file.name);
+
+    try {
+      const content = await this.extractFileContent(file);
+      if (content) {
+        this.conversacion = content;
+      }
+    } catch (error) {
+      this.errorMsg.set(
+        `Error al leer archivo: ${error instanceof Error ? error.message : 'Error desconocido'}`
+      );
+      this.fileName.set(null);
+    } finally {
+      this.fileLoading.set(false);
+      // Limpiar el input para permitir cargar el mismo archivo otra vez
+      input.value = '';
+    }
+  }
+
+  private async extractFileContent(file: File): Promise<string> {
+    const fileExt = file.name.toLowerCase().split('.').pop();
+
+    if (fileExt === 'txt') {
+      return this.readTextFile(file);
+    } else if (fileExt === 'zip') {
+      return this.extractFromZip(file);
+    } else {
+      throw new Error('Formato no válido. Usa .txt o .zip de WhatsApp');
+    }
+  }
+
+  private readTextFile(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const content = e.target?.result as string;
+        if (!content || content.trim().length === 0) {
+          reject(new Error('El archivo está vacío'));
+        } else {
+          resolve(content);
+        }
+      };
+      reader.onerror = () => reject(new Error('Error al leer el archivo'));
+      reader.readAsText(file);
+    });
+  }
+
+  private async extractFromZip(file: File): Promise<string> {
+    try {
+      const zip = new JSZip();
+      const zipContent = await zip.loadAsync(file);
+
+      // Buscar archivo .txt en el ZIP
+      const txtFiles = Object.keys(zipContent.files).filter((filename) =>
+        filename.toLowerCase().endsWith('.txt')
+      );
+
+      if (txtFiles.length === 0) {
+        throw new Error('No se encontró archivo .txt en el ZIP');
+      }
+
+      // Usar el primer archivo .txt encontrado
+      const txtFile = zipContent.files[txtFiles[0]];
+      const content = await txtFile.async('text');
+
+      if (!content || content.trim().length === 0) {
+        throw new Error('El archivo extraído está vacío');
+      }
+
+      return content;
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(`Error al procesar ZIP: ${error.message}`);
+      }
+      throw new Error('Error desconocido al procesar ZIP');
+    }
   }
 
   async analizar() {
     if (!this.conversacion.trim()) {
-      this.errorMsg.set('Pega o escribe una conversación antes de analizar.');
+      this.errorMsg.set('Pega o carga una conversación antes de analizar.');
       return;
     }
 
     this.loading.set(true);
     this.errorMsg.set('');
 
+    console.log('📝 Iniciando análisis de conversación...');
+    console.log('📤 Conversación enviada:', this.conversacion.substring(0, 300) + '...');
+
     const resultado = await this.analizarSvc.analizar(this.conversacion);
 
     this.loading.set(false);
 
     if (!resultado) {
+      console.error('❌ Error: resultado vacío o nulo');
       this.errorMsg.set('Error al analizar la conversación. Verifica la configuración de Supabase.');
       return;
     }
 
-    sessionStorage.setItem('itdux_analysis', JSON.stringify(resultado));
-    sessionStorage.setItem('itdux_conversacion', this.conversacion);
+    console.log('✅ Análisis completado. Resultado:', resultado);
 
+    try {
+      sessionStorage.setItem('itdux_analysis', JSON.stringify(resultado));
+      sessionStorage.setItem('itdux_conversacion', this.conversacion);
+      console.log('💾 Datos guardados en sessionStorage');
+    } catch (err) {
+      console.error('❌ Error guardando en sessionStorage:', err);
+      this.errorMsg.set('Error al guardar el análisis. Intenta nuevamente.');
+      return;
+    }
+
+    console.log('🚀 Navegando a /resultado-ia...');
     this.router.navigate(['/resultado-ia']);
   }
 }

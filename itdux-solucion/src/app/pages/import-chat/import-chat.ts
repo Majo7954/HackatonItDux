@@ -1,13 +1,13 @@
 import { Component, inject, signal, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Sidebar } from '../../shared/sidebar/sidebar';
 import { AnalizarConversacionService } from '../../core/services/analizar-conversacion.service';
 import JSZip from 'jszip';
 
 @Component({
   selector: 'app-import-chat',
-  imports: [FormsModule, RouterLink, Sidebar],
+  imports: [FormsModule, Sidebar],
   templateUrl: './import-chat.html',
   styleUrl: './import-chat.scss',
 })
